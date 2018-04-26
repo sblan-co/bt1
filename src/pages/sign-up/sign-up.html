@@ -1,0 +1,65 @@
+<ion-header>
+
+  <ion-navbar color="booktrap">
+    <ion-title>Registro</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content class="ion-content" padding class="fondo">
+  <ion-grid class="grid" class="fondo">
+
+    <form (ngSubmit)="logForm()" class="input">
+
+      <!-- NOMBRE -->
+      <ion-item class="fondo">
+        <ion-input name="firstname" placeholder="Nombre" text-input-placeholder-color="light" [(ngModel)]="user.firstname"></ion-input>
+      </ion-item>
+
+      <!-- APELLIDOS -->
+      <ion-item class="fondo">
+        <ion-input name="surname" placeholder="Apellidos" text-input-placeholder-color="light" [(ngModel)]="user.surname"></ion-input>
+      </ion-item>
+
+      <!-- EMAIL -->
+      <ion-item class="fondo">
+
+        <ion-label color="primary">
+          <ion-icon name="mail" item-start color="light"></ion-icon>
+        </ion-label>
+
+        <ion-input type="email" name="email" placeholder="Email" text-input-placeholder-color="light" [(ngModel)]="user.email"></ion-input>
+
+      </ion-item>
+
+      <!-- PASSWORD -->
+      <ion-item class="fondo">
+
+        <ion-label color="primary">
+          <ion-icon name="lock" item-start color="light"></ion-icon>
+        </ion-label>
+
+        <ion-input type="password" name="pass1" placeholder="Contraseña" text-input-placeholder-color="light" [(ngModel)]="user.pass1"></ion-input>
+
+      </ion-item>
+      <ion-item class="fondo">
+
+        <ion-label color="primary">
+          <ion-icon name="lock" item-start color="light"></ion-icon>
+        </ion-label>
+
+        <ion-input type="password" name="pass2" placeholder="Repita la contraseña" text-input-placeholder-color="light" [(ngModel)]="user.pass2"></ion-input>
+
+      </ion-item>
+      
+      <p></p>
+
+      <ion-row class="fondo">
+        <button [disabled]="!user.firstname || !user.surname || !user.email || !user.pass1 || !user.pass2" ion-button block color="light" type="submit" class="logIn-button">Confirmar</button>
+      </ion-row>
+    </form>
+
+    <p align="center" color="secondary"></p>
+
+  </ion-grid>
+</ion-content>

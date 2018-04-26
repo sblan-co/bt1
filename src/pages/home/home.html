@@ -1,14 +1,69 @@
-<ion-header>
-  <ion-navbar>
-    <ion-title>
-      Ionic Blank
-    </ion-title>
-  </ion-navbar>
-</ion-header>
+<ion-content class="ion-content" padding class="fondo">
+  <ion-grid class="grid" class="fondo">
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+    <!-- LOGO -->
+      <ion-row class="fondo">
+        <ion-col col-50>
+          <div class="img">
+            <img src="assets/imgs/bt_logo.png" class="img-responsive" />
+          </div>
+        </ion-col>
+      </ion-row>
+
+    <p></p>
+
+    <!-- <div class="input"> -->
+
+    <!-- EMAIL -->
+    <ion-row justify-content-start>
+      <ion-item ion-end class="fondo">
+        <ion-icon name="mail" item-start color="light"></ion-icon>
+        <ion-input type="email" class="input" placeholder="Email"></ion-input>
+      </ion-item>
+    </ion-row>
+
+    <!-- PASSWORD -->
+    <ion-row justify-content-start>
+      <ion-item ion-end class="fondo">
+        <ion-icon name="lock" item-start color="light"></ion-icon>
+        <ion-input type="password" placeholder="Contraseña" text-input-placeholder-color="light"></ion-input>
+      </ion-item>
+    </ion-row>
+    <!-- </div> -->
+
+    <ion-row class="fondo">
+      <button ion-button block color="light" class="logIn-button" (click)="emailLogin()">Entrar</button>
+    </ion-row>
+
+    <ion-row class="fondo">
+      <button ion-button clear color="light">Olvidé mi contraseña</button>
+    </ion-row>
+
+    <p align="center" color="secondary"></p>
+
+    <!-- SOCIAL MEDIA LOGIN -->
+    <div class="sn-icons">
+      <ion-row>
+        <ion-col>
+          <ion-icon ios="logo-facebook" md="logo-facebook" color="light"></ion-icon>
+        </ion-col>
+        <ion-col>
+          <ion-icon ios="logo-twitter" md="logo-twitter" color="light"></ion-icon>
+        </ion-col>
+        <ion-col>
+          <ion-icon ios="logo-googleplus" md="logo-googleplus" color="light"></ion-icon>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- ANOTHER OPTIONS -->
+    <div class="options">
+      <ion-row>
+        <!-- <ion-col> -->
+        <button ion-button clear color="light" (click)="signUp()">Registrarse</button>
+        <!-- </ion-col> -->
+      </ion-row>
+    </div>
+
+  </ion-grid>
 </ion-content>
