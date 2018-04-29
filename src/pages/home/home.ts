@@ -2,10 +2,13 @@
 import { Component } from '@angular/core';
 
 // Ionic-Angular
-import { NavController, Platform } from 'ionic-angular';
+import { NavController, Platform, AlertController } from 'ionic-angular';
 
 // Ionic
 import { StatusBar } from '@ionic-native/status-bar';
+
+// Firebase
+import { AngularFireAuth } from 'angularfire2/auth';
 
 // Project Pages
 import { SignUpPage } from '../sign-up/sign-up';
@@ -15,12 +18,10 @@ import { SignUpPage } from '../sign-up/sign-up';
   templateUrl: 'home.html'
 })
 export class HomePage {
-  public navCtrl: NavController;
   private plt: Platform;
   private statusBar: StatusBar;
   
-  constructor(nav: NavController) {
-    this.navCtrl = nav;
+  constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public alertCtrl : AlertController) {
     // this.plt.ready().then ((readySource) =>{
     //   this.statusBar.styleLightContent();
     // });
@@ -31,8 +32,30 @@ export class HomePage {
     this.navCtrl.push(SignUpPage);
   }
 
-  emailLogin()
+  emailLogin(email, password)
   {
+    console.log(email);
+    console.log(password);
+
+    this.afAuth.auth.signInWithEmailAndPassword(email, password).then(
+      res => {
+        console.log('ÉXITO.');
+        // this.navCtrl.push(TabsPage);
+      }
+    ).catch(
+      error => {
+        let alert = this.alertCtrl.create({
+          title: 'Error',
+          message: 'Email o contraseña no válidos.',
+          buttons: [
+            {
+              text: 'Cerrar',
+              role: 'cancel'
+            }
+          ]
+        });
+        alert.present();
+    });
 
   }
   

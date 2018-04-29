@@ -11,8 +11,8 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
 // Firebase
 import * as firebase from 'firebase/app';
-import * as FirebaseAuthModule from 'firebase/auth';
-import * as FirebaseDatabaseModule from 'firebase/database';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
 // Project
 import { MyApp } from './app.component';
@@ -38,8 +38,8 @@ export const firebaseConfig = {
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
-    firebase.initializeApp(firebaseConfig),
-    FirebaseAuthModule
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule
     // FirebaseDatabaseModule
   ],
   bootstrap: [IonicApp],
@@ -50,7 +50,7 @@ export const firebaseConfig = {
   ],
   providers: [
     // Platform,
-    FirebaseAuthModule,
+    AngularFireAuth,
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

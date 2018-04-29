@@ -18,7 +18,7 @@
     <ion-row justify-content-start>
       <ion-item ion-end class="fondo">
         <ion-icon name="mail" item-start color="light"></ion-icon>
-        <ion-input type="email" class="input" placeholder="Email"></ion-input>
+        <ion-input [(ngModel)]='email' type="email" class="input" placeholder="Email"></ion-input>
       </ion-item>
     </ion-row>
 
@@ -26,13 +26,13 @@
     <ion-row justify-content-start>
       <ion-item ion-end class="fondo">
         <ion-icon name="lock" item-start color="light"></ion-icon>
-        <ion-input type="password" placeholder="Contraseña" text-input-placeholder-color="light"></ion-input>
+        <ion-input [(ngModel)]='password' type="password" placeholder="Contraseña" text-input-placeholder-color="light"></ion-input>
       </ion-item>
     </ion-row>
     <!-- </div> -->
 
     <ion-row class="fondo">
-      <button ion-button block color="light" class="logIn-button" (click)="emailLogin()">Entrar</button>
+      <button ion-button block color="light" class="logIn-button" (click)="emailLogin(email, password)">Entrar</button>
     </ion-row>
 
     <ion-row class="fondo">
