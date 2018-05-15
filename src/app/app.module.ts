@@ -8,6 +8,9 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
+import { Camera } from '@ionic-native/camera';
+import { ImagePicker } from '@ionic-native/image-picker';
+import { Crop } from '@ionic-native/crop';
 // import { Platform } from 'ionic-angular';
 
 // Firebase
@@ -17,8 +20,13 @@ import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
 
 // Project
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
+import { LoginPage } from '../pages/login/login';
 import { SignUpPage } from '../pages/sign-up/sign-up';
+import { TabsPage } from '../pages/tabs/tabs';
+import { AboutPage } from '../pages/about/about';
+import { ContactPage } from '../pages/contact/contact';
+import { HomePage } from '../pages/home/home';
+import { ProfilePage } from '../pages/profile/profile';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBb5MZHaxOYE35iIbVwYVZL2idWh5lMLdM",
@@ -33,8 +41,13 @@ export const firebaseConfig = {
 @NgModule({
   declarations: [
     MyApp,
+    LoginPage,
+    SignUpPage,
+    TabsPage,
+    AboutPage,
+    ContactPage,
     HomePage,
-    SignUpPage
+    ProfilePage
   ],
   imports: [
     BrowserModule,
@@ -46,14 +59,22 @@ export const firebaseConfig = {
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    LoginPage,
+    SignUpPage,
+    TabsPage,
+    AboutPage,
+    ContactPage,
     HomePage,
-    SignUpPage
+    ProfilePage
   ],
   providers: [
     // Platform,
     Facebook,
     AngularFireAuth,
     StatusBar,
+    Camera,
+    ImagePicker,
+    Crop,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

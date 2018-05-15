@@ -1,69 +1,20 @@
-<ion-content class="ion-content" padding class="fondo">
-  <ion-grid class="grid" class="fondo">
+<ion-header>
+  <ion-navbar>
+          <ion-item>
+            <ion-icon name="search" item-start></ion-icon>
+            <ion-input type="search" placeholder="Buscar" clearInput="true"></ion-input>
+          </ion-item>
+  </ion-navbar>
+</ion-header>
 
-    <!-- LOGO -->
-      <ion-row class="fondo">
-        <ion-col col-50>
-          <div class="img">
-            <img src="assets/imgs/bt_logo.png" class="img-responsive" />
-          </div>
-        </ion-col>
-      </ion-row>
-
-    <p></p>
-
-    <!-- <div class="input"> -->
-
-    <!-- EMAIL -->
-    <ion-row justify-content-start>
-      <ion-item ion-end class="fondo">
-        <ion-icon name="mail" item-start color="light"></ion-icon>
-        <ion-input [(ngModel)]='email' type="email" class="input" placeholder="Email"></ion-input>
-      </ion-item>
-    </ion-row>
-
-    <!-- PASSWORD -->
-    <ion-row justify-content-start>
-      <ion-item ion-end class="fondo">
-        <ion-icon name="lock" item-start color="light"></ion-icon>
-        <ion-input [(ngModel)]='password' type="password" placeholder="Contraseña" text-input-placeholder-color="light"></ion-input>
-      </ion-item>
-    </ion-row>
-    <!-- </div> -->
-
-    <ion-row class="fondo">
-      <button ion-button block color="light" class="logIn-button" (click)="emailLogin(email, password)">Entrar</button>
-    </ion-row>
-
-    <ion-row class="fondo">
-      <button ion-button clear color="light">Olvidé mi contraseña</button>
-    </ion-row>
-
-    <p align="center" color="secondary"></p>
-
-    <!-- SOCIAL MEDIA LOGIN -->
-    <div class="sn-icons">
-      <ion-row>
-        <ion-col>
-          <ion-icon ios="logo-facebook" md="logo-facebook" color="light" (click)='fbLogin()'></ion-icon>
-        </ion-col>
-        <ion-col>
-          <ion-icon ios="logo-twitter" md="logo-twitter" color="light"></ion-icon>
-        </ion-col>
-        <ion-col>
-          <ion-icon ios="logo-googleplus" md="logo-googleplus" color="light"></ion-icon>
-        </ion-col>
-      </ion-row>
-    </div>
-
-    <!-- ANOTHER OPTIONS -->
-    <div class="options">
-      <ion-row>
-        <!-- <ion-col> -->
-        <button ion-button clear color="light" (click)="signUp()">Registrarse</button>
-        <!-- </ion-col> -->
-      </ion-row>
-    </div>
-
-  </ion-grid>
+<ion-content padding>
+  <!--<h2>Welcome to Ionic!</h2>
+  <p>
+    This starter project comes with simple tabs-based layout for apps
+    that are going to primarily use a Tabbed UI.
+  </p>
+  <p>
+    Take a look at the <code>src/pages/</code> directory to add or change tabs,
+    update any existing page or create new pages.
+  </p>-->
 </ion-content>

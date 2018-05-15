@@ -1,0 +1,30 @@
+page-contact {
+    ion-title {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 0 90px 1px;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+}
+ion-avatar > img{
+    border: solid;
+    border-radius:50%;
+    height:10rem;
+    width:10rem;
+}
+.row{
+    padding: 2%;
+}
+.row > div{
+}
+#info{
+    width: 60%;
+    float:left;
+}
+#avatar-image{
+    width: 40%;
+    float:left;
+}

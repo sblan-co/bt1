@@ -1,0 +1,65 @@
+page-login {
+    .grid
+    {
+        height: 100%;
+    }
+    .fondo
+    {
+        background-color: #75cbff;
+    }
+    .logIn-button
+    {
+        color: #75cbff;
+        margin-top: 5%;
+    }
+    img
+    {
+        display:block;
+        width:55%;
+        height:auto;
+        margin-left:auto;
+        margin-right:auto;
+        background-color: #75cbff;
+    }
+    .sn-icons
+    {
+        ion-icon {
+            font-size: 50px;
+        }
+
+        ion-row {
+            height: 100%;
+            flex-wrap: wrap;
+        }
+        
+        ion-col {
+            flex: 0 0 33%;
+            max-width: 33%;
+            text-align: center;
+            padding: 10px 5px;
+        }
+    }
+    .options
+    {
+        ion-row {
+            //justify-content: center;
+            height: 100%;
+            flex-wrap: wrap;
+        }
+        
+        ion-col {
+            flex: 0 0 50%;
+            max-width: 50%;
+            text-align: center;
+            padding: 10px 5px;
+        }
+    }
+    ion-input
+    {
+        color: #ffffff;
+    }
+    ion-row
+    {
+        justify-content: center;
+    }
+}

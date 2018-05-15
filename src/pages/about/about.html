@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-navbar>
+      <ion-buttons left>
+          <button ion-button icon-only (click)="takeMeBack()">
+             <ion-icon name="arrow-back"></ion-icon>
+         </button>
+         </ion-buttons>
+    <ion-title>
+      BookTrap
+    </ion-title>
+  </ion-navbar>
+  <button ion-button class="top" (click)="choosePicture();"><ion-icon name="images"></ion-icon></button>
+  <button ion-button class="top" (click)="takePhoto();"><ion-icon name="camera"></ion-icon></button>
+</ion-header>
+
+<ion-content padding>
+    <ion-item no-lines class="item-row">
+        <div item-content class="border-imagen" *ngFor="let photo of photos; let id = index">
+            <img class="imagen" (click)="deletePhotos(id)" [src]="photo"/>
+        </div>
+        <div  item-content class="border-icono" *ngFor="let icon of icons;">
+            <ion-icon class="icono" name="camera"></ion-icon>
+        </div>
+    </ion-item>
+  <ion-item>
+      <ion-label color="primary" floating>Título</ion-label>
+      <ion-input placeholder=""></ion-input>
+  </ion-item>
+  <ion-item>
+      <ion-label color="primary" floating>Autor</ion-label>
+      <ion-input placeholder=""></ion-input>
+  </ion-item>
+  <ion-item>
+      <ion-label color="primary" floating>Editorial</ion-label>
+      <ion-input placeholder=""></ion-input>
+  </ion-item>
+  <ion-item>
+        <ion-label color="primary" floating>Campo 1</ion-label>
+        <ion-input placeholder=""></ion-input>
+    </ion-item>
+    <ion-item>
+            <ion-label color="primary" floating>Campo 2</ion-label>
+            <ion-input placeholder=""></ion-input>
+        </ion-item>
+  <button ion-button full color="white">Subir libro</button>
+</ion-content>

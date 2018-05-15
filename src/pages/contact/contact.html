@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      Usuario
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <div item-content class="row">
+    <div item-content id="avatar-image">
+      <ion-avatar>
+        <img src="https://cdn7.bigcommerce.com/s-ydriczk/images/stencil/1280x1280/products/86797/86350/Goofy_Face_Mask_buy_Disney_star_masks_at_starstills__44875__11278.1394515602.jpg?c=2?imbypass=on" imageViewer>
+      </ion-avatar>
+    </div>
+    <div item-content id="info">
+        <ion-label>10 Préstamos</ion-label>
+        <ion-label>10 Intercambios</ion-label>
+        <ion-label><ion-icon name="pin"></ion-icon>&nbsp;Calle y CP</ion-label>
+    </div>
+  </div>
+  <div item-content  class="row">
+    <button ion-button full (click)="EditProfile()">Editar Perfil</button>
+  </div>
+  <div item-content class="row">
+    <ion-segment [(ngModel)]="relationship" color="primary" (ionChange)="segmentChanged($event)">
+      <ion-segment-button value="Publicaciones">
+        Publicados
+      </ion-segment-button>
+      <ion-segment-button value="Favoritos">
+        Favoritos
+      </ion-segment-button>
+      <ion-segment-button value="Opiniones">
+        Opiniones
+      </ion-segment-button>
+      <!--<ion-segment-button value="Seguidos">
+        Seguidos
+      </ion-segment-button>-->
+    </ion-segment>
+  </div>
+</ion-content>
