@@ -2,38 +2,44 @@
   <ion-grid class="grid" class="fondo">
 
     <!-- LOGO -->
-      <ion-row class="fondo">
-        <ion-col col-50>
-          <div class="img">
-            <img src="assets/imgs/bt_logo.png" class="img-responsive" />
-          </div>
-        </ion-col>
-      </ion-row>
+    <ion-row class="fondo">
+      <ion-col col-50>
+        <div class="img">
+          <img src="assets/imgs/bt_logo.png" class="img-responsive" />
+        </div>
+      </ion-col>
+    </ion-row>
 
     <p></p>
 
     <!-- <div class="input"> -->
 
     <!-- EMAIL -->
-    <ion-row justify-content-start>
-      <ion-item ion-end class="fondo">
-        <ion-icon name="mail" item-start color="light"></ion-icon>
-        <ion-input [(ngModel)]='email' type="email" class="input" placeholder="Email"></ion-input>
-      </ion-item>
-    </ion-row>
+    <ion-item class="fondo">
+      <ion-row justify-content-start>
+        <ion-item ion-end class="fondo">
+          <ion-icon name="mail" item-start color="light"></ion-icon>
+          <ion-input [(ngModel)]='email' type="email" class="input" placeholder="Email"></ion-input>
+        </ion-item>
+      </ion-row>
+    </ion-item>
 
     <!-- PASSWORD -->
-    <ion-row justify-content-start>
-      <ion-item ion-end class="fondo">
-        <ion-icon name="lock" item-start color="light"></ion-icon>
-        <ion-input [(ngModel)]='password' type="password" placeholder="Contraseña" text-input-placeholder-color="light"></ion-input>
-      </ion-item>
-    </ion-row>
+    <ion-item class="fondo">
+      <ion-row justify-content-start>
+        <ion-item ion-end class="fondo">
+          <ion-icon name="lock" item-start color="light"></ion-icon>
+          <ion-input [(ngModel)]='password' type="password" placeholder="Contraseña" text-input-placeholder-color="light"></ion-input>
+        </ion-item>
+      </ion-row>
+    </ion-item>
     <!-- </div> -->
 
-    <ion-row class="fondo">
-      <button ion-button block color="light" class="logIn-button" (click)="emailLogin(email, password)">Entrar</button>
-    </ion-row>
+    <ion-item class="fondo">
+      <ion-row class="fondo">
+        <button ion-button block color="light" class="logIn-button" (click)="emailLogin(email, password)">Entrar</button>
+      </ion-row>
+    </ion-item>
 
     <ion-row class="fondo">
       <button ion-button clear color="light">Olvidé mi contraseña</button>

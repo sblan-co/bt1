@@ -12,7 +12,6 @@ import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Crop } from '@ionic-native/crop';
-// import { Platform } from 'ionic-angular';
 
 // Firebase
 import * as firebase from 'firebase/app';

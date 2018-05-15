@@ -6,7 +6,6 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { NavController } from 'ionic-angular';
 
 // Project
-import { SignoutPage } from '../signout/signout';
 import { LoginPage } from '../login/login';
 
 @Component({

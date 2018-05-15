@@ -85,10 +85,11 @@
         <variable name="APP_ID" value="179785522672609" />
         <variable name="APP_NAME" value="BookTrap" />
     </plugin>
-    <engine name="android" spec="6.3.0" />
     <plugin name="cordova-plugin-camera" spec="^4.0.3" />
     <plugin name="cordova-plugin-crop" spec="^0.4.0" />
     <plugin name="com.synconset.imagepicker" spec="~2.1.10">
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="BookTrap ImagePicker" />
     </plugin>
+    <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
+    <engine name="android" spec="6.3.0" />
 </widget>

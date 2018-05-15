@@ -29,9 +29,6 @@ export class LoginPage {
     public afAuth: AngularFireAuth,
     public alertCtrl: AlertController,
     public fb: Facebook) {
-    // this.plt.ready().then ((readySource) =>{
-    //   this.statusBar.styleLightContent();
-    // });
   }
 
   signUp() {
@@ -39,19 +36,16 @@ export class LoginPage {
   }
 
   emailLogin(email, password) {
-    console.log(email);
-    console.log(password);
 
     this.afAuth.auth.signInWithEmailAndPassword(email, password).then(
       res => {
-        console.log('ÉXITO.');
         this.navCtrl.push(TabsPage);
       }
     ).catch(
       error => {
         let alert = this.alertCtrl.create({
           title: 'Error',
-          message: 'Email o contraseña no válidos.',
+          message: 'Email o contraseña no válidos.' + error,
           buttons: [
             {
               text: 'Cerrar',
