@@ -2,6 +2,7 @@
 // Angular
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
+import { PopoverController } from 'ionic-angular';
 
 // Ionic
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -27,6 +28,7 @@ import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { ProfilePage } from '../pages/profile/profile';
+import { MoreOptionsPage } from '../pages/more-options/more-options';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBb5MZHaxOYE35iIbVwYVZL2idWh5lMLdM",
@@ -47,7 +49,8 @@ export const firebaseConfig = {
     AboutPage,
     ContactPage,
     HomePage,
-    ProfilePage
+    ProfilePage,
+    MoreOptionsPage
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,8 @@ export const firebaseConfig = {
     AboutPage,
     ContactPage,
     HomePage,
-    ProfilePage
+    ProfilePage,
+    MoreOptionsPage
   ],
   providers: [
     // Platform,
@@ -74,6 +78,7 @@ export const firebaseConfig = {
     StatusBar,
     Camera,
     ImagePicker,
+    PopoverController,
     Crop,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}

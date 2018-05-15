@@ -2,25 +2,28 @@
     <ion-navbar>
         <ion-buttons left>
             <button ion-button icon-only (click)="takeMeBack()">
-               <ion-icon name="arrow-back"></ion-icon>
-           </button>
-           </ion-buttons>
-      <ion-title>
-        Editar perfil
-      </ion-title>
-      <ion-title class="check">
-            <a><ion-icon name="checkmark"></ion-icon></a>
-      </ion-title>
+                <ion-icon name="arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title>
+            Editar perfil
+        </ion-title>
+        <ion-title class="check">
+            <a>
+                <ion-icon name="checkmark"></ion-icon>
+            </a>
+        </ion-title>
     </ion-navbar>
-  </ion-header>
-  
-  <ion-content padding>
-        <div item-content class="row">
-            <ion-avatar>
-                <img src="https://cdn7.bigcommerce.com/s-ydriczk/images/stencil/1280x1280/products/86797/86350/Goofy_Face_Mask_buy_Disney_star_masks_at_starstills__44875__11278.1394515602.jpg?c=2?imbypass=on"/>
-            </ion-avatar>
-            <a (click)="ChangePhoto()">Cambiar foto</a>
-        </div>
+</ion-header>
+
+<ion-content padding>
+    <div item-content class="row">
+        <ion-avatar>
+            <img src="https://cdn7.bigcommerce.com/s-ydriczk/images/stencil/1280x1280/products/86797/86350/Goofy_Face_Mask_buy_Disney_star_masks_at_starstills__44875__11278.1394515602.jpg?c=2?imbypass=on"
+            />
+        </ion-avatar>
+        <a (click)="ChangePhoto()">Cambiar foto</a>
+    </div>
     <ion-item>
         <ion-label color="primary" floating>Título</ion-label>
         <ion-input placeholder=""></ion-input>
@@ -34,12 +37,11 @@
         <ion-input placeholder=""></ion-input>
     </ion-item>
     <ion-item>
-          <ion-label color="primary" floating>Campo 1</ion-label>
-          <ion-input placeholder=""></ion-input>
-      </ion-item>
-      <ion-item>
-              <ion-label color="primary" floating>Campo 2</ion-label>
-              <ion-input placeholder=""></ion-input>
-      </ion-item>
-  </ion-content>
-  
+        <ion-label color="primary" floating>Campo 1</ion-label>
+        <ion-input placeholder=""></ion-input>
+    </ion-item>
+    <ion-item>
+        <ion-label color="primary" floating>Campo 2</ion-label>
+        <ion-input placeholder=""></ion-input>
+    </ion-item>
+</ion-content>
