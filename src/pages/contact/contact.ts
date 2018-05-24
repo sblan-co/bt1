@@ -7,6 +7,7 @@ import { PopoverController } from 'ionic-angular';
 
 // Project
 import { ProfilePage } from '../profile/profile';
+import { PublicationPage } from '../publication/publication';
 import { MoreOptionsPage } from '../more-options/more-options';
 
 @Component({
@@ -14,13 +15,14 @@ import { MoreOptionsPage } from '../more-options/more-options';
   templateUrl: 'contact.html'
 })
 export class ContactPage {
-  PageEditProfile = ProfilePage;
+  libros: string;
+  publicaciones: string[] = ["https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg"];
   constructor(public navCtrl: NavController, public popoverCtrl: PopoverController) {
-
+    this.libros = "Publicaciones";
   }
 
   EditProfile() {
-    this.navCtrl.setRoot(this.PageEditProfile);
+    this.navCtrl.setRoot(ProfilePage);
   }
 
   showMoreOptions($event)
@@ -29,6 +31,10 @@ export class ContactPage {
     popover.present({
       ev: $event
     });
+  }
+
+  selectPhotos(index) {
+    this.navCtrl.setRoot(PublicationPage);
   }
 
 }

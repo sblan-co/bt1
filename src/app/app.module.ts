@@ -17,6 +17,7 @@ import { Crop } from '@ionic-native/crop';
 import * as firebase from 'firebase/app';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth';
+import { AngularFireStorageModule, AngularFireStorage } from 'angularfire2/storage';
 
 // Project
 import { MyApp } from './app.component';
@@ -55,8 +56,8 @@ export const firebaseConfig = {
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
-    AngularFireAuthModule
-    // FirebaseDatabaseModule
+    AngularFireAuthModule,
+    AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -71,9 +72,9 @@ export const firebaseConfig = {
     MoreOptionsPage
   ],
   providers: [
-    // Platform,
     Facebook,
     AngularFireAuth,
+    AngularFireStorage,
     StatusBar,
     Camera,
     ImagePicker,

@@ -22,7 +22,7 @@ export class ProfilePage {
   }
   
   takeMeBack() {//volver a atras boton
-    this.navCtrl.push(ContactPage);
+    this.navCtrl.setRoot(ContactPage);
   }
 
 }

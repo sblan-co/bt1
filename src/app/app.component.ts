@@ -13,7 +13,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 export class MyApp {
   @ViewChild(NavController) navCtrl: NavController;
   // rootPage:any = LoginPage;
-  rootPage: any = LoginPage;
+  rootPage: any;
 
   constructor(
     platform: Platform,

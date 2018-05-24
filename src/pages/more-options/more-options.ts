@@ -24,7 +24,5 @@ import { LoginPage } from '../login/login';
       console.log("Cierra sesión");
       this.afAuth.auth.signOut();
       this.navCtrl.push(LoginPage);
-      
-      // this.navCtrl.push(SignoutPage);
     }
   }
