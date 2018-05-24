@@ -1,16 +1,50 @@
 <ion-header>
     <ion-navbar>
-        <ion-buttons left>
-            <button ion-button icon-only (click)="takeMeBack()">
-                <ion-icon name="arrow-back"></ion-icon>
-            </button>
-        </ion-buttons>
         <ion-title>
             Publicación
         </ion-title>
+        <ion-buttons right>
+            <button ion-button clear>
+                <ion-icon name='star-outline'></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-    
+
+    <!-- IMAGEN -->
+    <ion-item>
+        <ion-slide pager='true'>
+            <ion-row>
+                <ion-col *ngFor='let img of book.images'>
+                    <img src="img"/>
+                </ion-col>
+            </ion-row>
+        </ion-slide>
+    </ion-item>
+
+    <ion-item>
+        <ion-row>
+            <ion-col>
+                <ion-avatar>
+                    <img src="img" (error)="imgError($event)" />
+                </ion-avatar>
+            </ion-col>
+        </ion-row>
+    </ion-item>
+
 </ion-content>
+
+<ion-footer>
+
+    <ion-row>
+        <ion-col>
+            <button ion-button block color="primary" icon-start class="options-buttons">
+                Solicitar Intercambio
+                <ion-icon style='padding-left: 5%' name="bookmarks"></ion-icon>
+            </button>
+        </ion-col>
+    </ion-row>
+
+</ion-footer>

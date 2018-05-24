@@ -34,7 +34,7 @@ export class ContactPage {
   }
 
   selectPhotos(index) {
-    this.navCtrl.setRoot(PublicationPage);
+    this.navCtrl.push(PublicationPage);
   }
 
 }

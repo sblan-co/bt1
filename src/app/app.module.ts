@@ -29,6 +29,7 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { ProfilePage } from '../pages/profile/profile';
 import { MoreOptionsPage } from '../pages/more-options/more-options';
+import { PublicationPage } from '../pages/publication/publication';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBb5MZHaxOYE35iIbVwYVZL2idWh5lMLdM",
@@ -50,7 +51,8 @@ export const firebaseConfig = {
     ContactPage,
     HomePage,
     ProfilePage,
-    MoreOptionsPage
+    MoreOptionsPage,
+    PublicationPage
   ],
   imports: [
     BrowserModule,
@@ -69,7 +71,8 @@ export const firebaseConfig = {
     ContactPage,
     HomePage,
     ProfilePage,
-    MoreOptionsPage
+    MoreOptionsPage,
+    PublicationPage
   ],
   providers: [
     Facebook,
