@@ -91,5 +91,5 @@
         <variable name="PHOTO_LIBRARY_USAGE_DESCRIPTION" value="BookTrap ImagePicker" />
     </plugin>
     <plugin name="cordova-plugin-whitelist" spec="^1.3.3" />
-    <engine name="android" spec="6.3.0" />
+    <engine name="android" spec="~6.3.0" />
 </widget>
