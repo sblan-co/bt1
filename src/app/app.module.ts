@@ -12,6 +12,8 @@ import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Crop } from '@ionic-native/crop';
+import { Geolocation } from '@ionic-native/geolocation';
+import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder'
 
 // Firebase
 import * as firebase from 'firebase/app';
@@ -83,6 +85,8 @@ export const firebaseConfig = {
     ImagePicker,
     PopoverController,
     Crop,
+    Geolocation,
+    NativeGeocoder,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler}
   ]

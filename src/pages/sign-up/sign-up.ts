@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
+import { Geolocation } from '@ionic-native/geolocation';
+
+declare var google: any;
 
 @Component({
   selector: 'page-sign-up',
@@ -9,11 +12,15 @@ import * as firebase from 'firebase';
 })
 export class SignUpPage {
   user = {};
-
-  constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public alertCtrl : AlertController) {
+  constructor(public navCtrl: NavController, public afAuth: AngularFireAuth, public alertCtrl : AlertController, private geolocation: Geolocation) {
   }
 
-  logForm() {
+  async logForm() {
+   let location = await this.get_location();
+   console.log(location);
+    let lat: any;
+    let lon: any;
+    let city: any;
     console.log('Create Account..' + JSON.stringify(this.user));
 
     if (this.user['pass1'] === this.user['pass2']) {
@@ -24,12 +31,11 @@ export class SignUpPage {
 
       localStorage.setItem('email', email);
       localStorage.setItem('password', password);
-      console.log(password);
 
-      this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
+       this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
         user => {
-          firebase.auth().onAuthStateChanged(user => {
-            if (user) {
+           firebase.auth().onAuthStateChanged(user => {
+             if (user) {
 
               let userRef = firebase.database().ref('/users/' + user.uid);
 
@@ -39,7 +45,7 @@ export class SignUpPage {
                 'email': email,
                 'created': firebase.database.ServerValue.TIMESTAMP,
                 'firstname': firstName,
-                'surname': surname
+                'surname': surname,
               });
       
               //this.navCtrl.push(TabsPage);
@@ -85,5 +91,65 @@ export class SignUpPage {
 
     alert.present();
     }
+  }
+
+  get_location(){
+    return new Promise(resolve => {
+      
+      let location = {};
+    //Code Location, Lat, Lon, City, Country
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+          let lat= position.coords.latitude;
+          let lon= position.coords.longitude;
+          location['lat'] = lat;
+          location ['lon'] = lon;
+
+         let latlng = new google.maps.LatLng(lat, lon);
+
+               new google.maps.Geocoder().geocode({'latLng' : latlng}, function(results, status) {
+                   if (status == google.maps.GeocoderStatus.OK) {
+                       if (results[1]) {
+                           var country = null, countryCode = null, city = null, cityAlt = null;
+                           var c, lc, component;
+                           for (var r = 0, rl = results.length; r < rl; r += 1) {
+                               var result = results[r];
+
+                               if (!city && result.types[0] === 'locality') {
+                                   for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                                       component = result.address_components[c];
+
+                                       if (component.types[0] === 'locality') {
+                                           city = component.long_name;
+                                           break;
+                                       }
+                                   }
+                               }
+                               else if (!city && !cityAlt && result.types[0] === 'administrative_area_level_1') {
+                                   for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                                       component = result.address_components[c];
+
+                                       if (component.types[0] === 'administrative_area_level_1') {
+                                           cityAlt = component.long_name;
+                                           break;
+                                       }
+                                   }
+                               } else if (!country && result.types[0] === 'country') {
+                                   country = result.address_components[0].long_name;
+                                   countryCode = result.address_components[0].short_name;
+                               }
+
+                               if (city && country) {
+                                   break;
+                               }
+                           }
+                           location['city'] = city;
+                       }
+                   }
+               });
+     });
+   }
+   resolve(location);
+  });
   }
 }
