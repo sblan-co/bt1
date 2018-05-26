@@ -96,14 +96,22 @@ export class SignUpPage {
   get_location(){
     return new Promise(resolve => {
       
+
       let location = {};
     //Code Location, Lat, Lon, City, Country
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
-          let lat= position.coords.latitude;
-          let lon= position.coords.longitude;
-          location['lat'] = lat;
-          location ['lon'] = lon;
+          let lat = position.coords.latitude;
+          let lon = position.coords.longitude;
+
+          this.presentAlert('LAT', lat);
+          this.presentAlert('LON', lon);
+
+          this.presentAlert('object',position);
+          this.presentAlert('JSON', JSON.stringify(position));
+
+          // location['lat'] = lat;
+          // location ['lon'] = lon;
 
          let latlng = new google.maps.LatLng(lat, lon);
 
@@ -151,5 +159,30 @@ export class SignUpPage {
    }
    resolve(location);
   });
+  }
+
+  
+  presentAlert(t, m) {
+    try {
+      var initalertCtrl = this.alertCtrl;
+      let alert = initalertCtrl.create({
+        title: t,
+        message: m,
+        buttons: [
+          {
+            text: 'No',
+            role: 'alert',
+          },
+          {
+            text: 'Yes',
+            role: 'confirm',
+          }
+        ]
+      });
+      alert.present();
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 }
