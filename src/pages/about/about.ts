@@ -94,17 +94,28 @@ export class AboutPage {
     }
   }
 
+  AddImages_Storage(bookId){
+    for(var i=0;i<this.photos.length;i++){
+      const pictures = firebase.storage().ref('pictures/'+bookId+'/'+this.afAuth.auth.currentUser.uid+'/'+i);
+      pictures.putString(this.photos[i], 'data_url');
+    }
+  }
+
   async addExampler(bookId) {
 
     // Adds exampler to database
 
     let ref = firebase.database().ref('examplers');
+    
+    // Adds Images to storage
+    await this.AddImages_Storage(bookId);
 
     let examplerKey = ref.push({
       'book_id': bookId,
       'comment': this.comment,
       'editorial': this.editorial,
-      'owner_id': this.afAuth.auth.currentUser.uid
+      'owner_id': this.afAuth.auth.currentUser.uid,
+      'URLPhotos': this.photos
     }).key;
 
 
@@ -244,28 +255,32 @@ export class AboutPage {
 
   // PICTURES MANAGEMENT
 
-  takePhoto() {
+  async takePhoto() {
     if (this.photos.length == 3) {
       this.MaxPhotosAlert();
     } else {
-      let options: CameraOptions = {
-        quality: 100,
-        destinationType: this.camera.DestinationType.FILE_URI,
-        encodingType: this.camera.EncodingType.JPEG,
-        mediaType: this.camera.MediaType.PICTURE
+      try{
+        let options: CameraOptions = {
+          quality: 100,
+          targetHeight: 600,
+          targetWidth: 600,
+          destinationType: this.camera.DestinationType.DATA_URL,
+          encodingType: this.camera.EncodingType.JPEG,
+          mediaType: this.camera.MediaType.PICTURE,
+          correctOrientation: true
+        }
+  
+        const result = await this.camera.getPicture(options);
+        const image = `data:image/jpeg;base64,${result}`;
+          // imageData is either a base64 encoded string or a file URI
+          // If it's base64:
+          this.path = image;
+          this.EditAlert();
+      }catch (e){
+        console.log(e);
       }
-
-      this.camera.getPicture(options).then(url => {
-        // imageData is either a base64 encoded string or a file URI
-        // If it's base64:
-        this.path = url;
-        this.EditAlert();
-      }, (err) => {
-        // Handle error
-        alert("Error " + err);
-      });
-    }
   }
+}
 
   choosePicture() {
     if (this.photos.length == 3) {
