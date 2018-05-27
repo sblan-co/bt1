@@ -94,7 +94,6 @@
     <plugin name="cordova-plugin-geolocation" spec="^4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="The app need the geolocation" />
     </plugin>
-    <engine name="android" spec="~6.3.0" />
     <plugin name="cordova-plugin-googlemaps" spec="^2.3.4">
         <variable name="API_KEY_FOR_ANDROID" value="AIzaSyD83kk6AYDaynI2DXrxUsmCsY-EbocheE8" />
         <variable name="API_KEY_FOR_IOS" value="AIzaSyCz5PXyJVRqi3z7ARUPLveozAz3dvwqfbw" />
@@ -102,4 +101,6 @@
         <variable name="ANDROID_SUPPORT_V4_VERSION" value="26.1.0" />
     </plugin>
     <plugin name="cordova-plugin-nativegeocoder" spec="^3.1.1" />
+    <allow-navigation href="http://192.168.5.87:8100" />
+    <engine name="android" spec="6.3.0" />
 </widget>

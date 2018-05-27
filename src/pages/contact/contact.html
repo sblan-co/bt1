@@ -1,10 +1,15 @@
 <ion-header>
-  <ion-navbar hideBackButton="true">
+  <ion-navbar color="booktrap" hideBackButton="true">
     <ion-title>
-      Usuario
+      {{ user.firstname }}
     </ion-title>
+    <ion-buttons left>
+      <button ion-button color="light" icon-only clear>
+        <ion-icon name="mail"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-buttons right>
-      <button ion-button icon-only clear (click)="showMoreOptions($event)">
+      <button ion-button color="light" icon-only clear (click)="showMoreOptions($event)">
         <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
@@ -14,22 +19,24 @@
 <ion-content>
   <div item-content class="row">
     <div item-content id="avatar-image">
-      <ion-avatar>
-        <img src="https://cdn7.bigcommerce.com/s-ydriczk/images/stencil/1280x1280/products/86797/86350/Goofy_Face_Mask_buy_Disney_star_masks_at_starstills__44875__11278.1394515602.jpg?c=2?imbypass=on" imageViewer>
+      <ion-avatar color="booktrap">
+        <img src="https://cdn7.bigcommerce.com/s-ydriczk/images/stencil/1280x1280/products/86797/86350/Goofy_Face_Mask_buy_Disney_star_masks_at_starstills__44875__11278.1394515602.jpg?c=2?imbypass=on"
+          imageViewer>
       </ion-avatar>
     </div>
     <div item-content id="info">
-        <ion-label>10 Préstamos</ion-label>
-        <ion-label>10 Intercambios</ion-label>
-        <ion-label><ion-icon name="pin"></ion-icon>&nbsp;Calle y CP</ion-label>
+      <!-- <ion-label>10 Préstamos</ion-label> -->
+      <ion-label>{{ user.nExchanges }} Intercambios</ion-label>
+      <ion-label>
+        <ion-icon name="pin"></ion-icon>&nbsp;Calle y CP</ion-label>
     </div>
   </div>
-  <div item-content  class="row">
-    <button ion-button full (click)="EditProfile()">Editar Perfil</button>
+  <div item-content class="row">
+    <button ion-button full color="booktrap" (click)="EditProfile()">Editar Perfil</button>
   </div>
   <div item-content class="row">
-    <ion-segment [(ngModel)]="libros" color="primary">
-      <ion-segment-button value="Publicaciones">
+    <ion-segment [(ngModel)]="libros" color="booktrap">
+      <ion-segment-button selected value="Publicaciones">
         Publicados
       </ion-segment-button>
       <ion-segment-button value="Favoritos">
@@ -43,11 +50,18 @@
       </ion-segment-button>-->
     </ion-segment>
   </div>
-  <div [ngSwitch]="libros">
-    <ion-grid *ngSwitchCase="'Publicaciones'">
+  <div [ngSwitch]="books">
+    <ion-grid *ngSwitchCase="'Publications'" no-padding>
       <ion-row no-padding>
-        <ion-col col-4 no-padding *ngFor="let publicacion of publicaciones; let id = index">
-          <img class="imagen" (click)="selectPhotos(id)" [src]="publicacion"/>
+        <ion-col col-4 no-padding *ngFor="let publication of user.publications; let id = index">
+          <ion-card no-padding>
+            <img class="imagen" (click)="selectPhotos(id)" [src]='' > <!-- [src]="publication.img" /-->
+            <ion-card-content>
+              <ion-card-title>
+                {{ publication.title }}
+              </ion-card-title>
+            </ion-card-content>
+          </ion-card>
         </ion-col>
       </ion-row>
     </ion-grid>

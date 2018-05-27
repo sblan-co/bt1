@@ -1,5 +1,5 @@
 <ion-header>
-    <ion-navbar>
+    <ion-navbar color='booktrap'>
         <ion-buttons left>
             <!-- <button ion-button icon-only (click)="takeMeBack()">
                 <ion-icon name="arrow-back"></ion-icon>
@@ -9,12 +9,14 @@
             Añade un libro
         </ion-title>
     </ion-navbar>
-    <button ion-button class="top" (click)="choosePicture();">
-        <ion-icon name="images"></ion-icon>
-    </button>
-    <button ion-button class="top" (click)="takePhoto();">
-        <ion-icon name="camera"></ion-icon>
-    </button>
+    <ion-row>
+        <button ion-button class="top" color='booktrap' (click)="choosePicture();">
+            <ion-icon name="images"></ion-icon>
+        </button>
+        <button ion-button class="top" color='booktrap' (click)="takePhoto();">
+            <ion-icon name="camera"></ion-icon>
+        </button>
+    </ion-row>
 </ion-header>
 
 <ion-content padding>
@@ -27,29 +29,29 @@
         </div>
     </ion-item>
 
-    <form (ngSubmit)="uploadBook()" class="input">
+    <form no-padding (ngSubmit)="uploadBook()" class="input">
 
         <!-- TÍTULO -->
         <ion-item>
-            <ion-label color="primary" floating>Título</ion-label>
+            <ion-label color="booktrap" floating>Título</ion-label>
             <ion-input placeholder="" name="title" [(ngModel)]="book.title"></ion-input>
         </ion-item>
 
         <!-- AUTOR -->
         <ion-item>
-            <ion-label color="primary" floating>Autor</ion-label>
+            <ion-label color="booktrap" floating>Autor</ion-label>
             <ion-input placeholder="" name="author" [(ngModel)]="book.author"></ion-input>
         </ion-item>
 
         <!-- EDITORIAL -->
         <ion-item>
-            <ion-label color="primary" floating>Editorial</ion-label>
+            <ion-label color='booktrap' floating>Editorial</ion-label>
             <ion-input placeholder="" name="editorial" [(ngModel)]="book.editorial"></ion-input>
         </ion-item>
 
         <!-- COMENTARIO -->
         <ion-item>
-            <ion-label color="primary" floating>Comentario</ion-label>
+            <ion-label color='booktrap' floating>Comentario</ion-label>
             <ion-input placeholder="" name="comment" [(ngModel)]="book.comment"></ion-input>
         </ion-item>
 
@@ -57,6 +59,11 @@
         <ion-label color="primary" floating>Campo 2</ion-label>
         <ion-input placeholder=""></ion-input>
     </ion-item> -->
-        <button ion-button full color="white" type="submit">Subir libro</button>
+        <ion-footer>
+            <ion-row>
+                <button ion-button block color='booktrap' type="submit">Subir libro</button>
+            </ion-row>
+        </ion-footer>
+
     </form>
 </ion-content>

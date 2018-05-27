@@ -98,6 +98,7 @@ export class SignUpPage {
   get_location(){
     return new Promise<any>(resolve => {
       
+
       let location = {};
       let lat;
       let lon;
@@ -157,5 +158,30 @@ export class SignUpPage {
      });
    }
   });
+  }
+
+  
+  presentAlert(t, m) {
+    try {
+      var initalertCtrl = this.alertCtrl;
+      let alert = initalertCtrl.create({
+        title: t,
+        message: m,
+        buttons: [
+          {
+            text: 'No',
+            role: 'alert',
+          },
+          {
+            text: 'Yes',
+            role: 'confirm',
+          }
+        ]
+      });
+      alert.present();
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 }
