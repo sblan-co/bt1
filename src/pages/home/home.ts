@@ -16,7 +16,7 @@ export class HomePage {
   constructor(public navCtrl: NavController,
   public alertCtrl: AlertController,
   private geolocation: Geolocation) {
-    //this.hola();
+    
   }
   
 }

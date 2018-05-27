@@ -16,11 +16,7 @@ export class SignUpPage {
   }
 
   async logForm() {
-   let location = await this.get_location();
-   console.log(location);
-    let lat: any;
-    let lon: any;
-    let city: any;
+    let location = await this.get_location();
     console.log('Create Account..' + JSON.stringify(this.user));
 
     if (this.user['pass1'] === this.user['pass2']) {
@@ -28,6 +24,9 @@ export class SignUpPage {
       let surname: string = this.user['surname'];
       let email: string = this.user['email'];
       let password: string = this.user['pass1'];
+      let lat = location['lat'];
+      let lon = location['lon'];
+      let city = location['city'];
 
       localStorage.setItem('email', email);
       localStorage.setItem('password', password);
@@ -46,6 +45,9 @@ export class SignUpPage {
                 'created': firebase.database.ServerValue.TIMESTAMP,
                 'firstname': firstName,
                 'surname': surname,
+                'city':city,
+                'lat':lat,
+                'lon':lon
               });
       
               //this.navCtrl.push(TabsPage);
@@ -94,23 +96,24 @@ export class SignUpPage {
   }
 
   get_location(){
-    return new Promise(resolve => {
+    return new Promise<any>(resolve => {
       
       let location = {};
+      let lat;
+      let lon;
+      let city = null;
     //Code Location, Lat, Lon, City, Country
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(position => {
-          let lat= position.coords.latitude;
-          let lon= position.coords.longitude;
-          location['lat'] = lat;
-          location ['lon'] = lon;
+          lat= position.coords.latitude;
+          lon= position.coords.longitude;
 
          let latlng = new google.maps.LatLng(lat, lon);
 
                new google.maps.Geocoder().geocode({'latLng' : latlng}, function(results, status) {
                    if (status == google.maps.GeocoderStatus.OK) {
                        if (results[1]) {
-                           var country = null, countryCode = null, city = null, cityAlt = null;
+                           var country = null, countryCode = null, cityAlt = null;
                            var c, lc, component;
                            for (var r = 0, rl = results.length; r < rl; r += 1) {
                                var result = results[r];
@@ -142,14 +145,17 @@ export class SignUpPage {
                                if (city && country) {
                                    break;
                                }
-                           }
-                           location['city'] = city;
-                       }
+                           }        
+                           
+                          location['lat'] = lat;
+                          location['lon'] = lon;
+                          location['city'] = city;
+                          resolve(location);
+                         }
                    }
                });
      });
    }
-   resolve(location);
   });
   }
 }
