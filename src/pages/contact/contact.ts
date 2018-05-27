@@ -37,6 +37,9 @@ export class ContactPage {
     await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid).once('value').then(
       async snapshot => {
         this.user['firstname'] = snapshot.val().firstname;
+        this.user['lat'] = snapshot.val().lat;
+        this.user['lon'] = snapshot.val().lon;
+        this.user['city'] = snapshot.val().city;
         
         if (snapshot.hasChild('exchanges')){
           await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/exchanges').once('value').then(
