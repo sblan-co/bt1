@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
 import * as firebase from 'firebase/app';
 
 // Ionic-Angular
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 import { PopoverController } from 'ionic-angular';
 
 // Project
@@ -24,13 +24,31 @@ export class ContactPage {
   publications: string[] = ["https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg"];
   
   constructor(
+    platform: Platform,
     public navCtrl: NavController, 
     public popoverCtrl: PopoverController,
     public afAuth: AngularFireAuth) {
 
+      
       this.user = {};
-      this.getUserData();
-      this.books = "Publications";
+
+      platform.ready().then(
+        async () => {
+          
+          if (!this.checkValue(localStorage.getItem('selectedPublication'))) {
+            external = false;
+            this.user['uid'] = await this.afAuth.auth.currentUser.uid;
+          }
+          else {
+            external = true;
+            let pub = localStorage.getItem('selectedPublication');
+            this.user['uid'] = await pub['uid'];
+          }
+
+          this.getUserData();
+          this.books = "Publications";
+        }
+      );
   }
 
   async getUserData(){
@@ -95,6 +113,10 @@ export class ContactPage {
     );
   }
 
+  checkValue(str: any): boolean {
+    return ((str !== '') && (str != null) && (str !== 'null') && (str !== 'undefined'));
+  }
+  
   EditProfile() {
     this.navCtrl.setRoot(ProfilePage);
   }
