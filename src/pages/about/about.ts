@@ -52,7 +52,7 @@ export class AboutPage {
 
       // CHECK IF BOOK IS ALREADY IN THE DATABASE
       firebase.database().ref('books').once('value').then(
-        booksSnap => {
+       async booksSnap => {
           // this.presentAlert('', JSON.stringify(booksSnap));
           let bookExist = false;
 
@@ -79,49 +79,45 @@ export class AboutPage {
 
             let ref = firebase.database().ref('books');
 
-            let bookId = ref.push({
+            var bookId = ref.push({
               'author': this.author,
               'title': this.title
-            }).key;
-
-            // Adds book to examplers
-
-            this.addExampler(bookId);
-          }
+            }).then(result => {
+              var bookId = result.key;
+              this.addExampler(bookId);
+            });
         }
-      );
+       });
 
     }
   }
 
-  AddImages_Storage(bookId){
-    for(var i=0;i<this.photos.length;i++){
-      const pictures = firebase.storage().ref('pictures/'+bookId+'/'+this.afAuth.auth.currentUser.uid+'/'+i);
-      pictures.putString(this.photos[i], 'data_url');
-    }
+  AddImagesStorage(bookId){
+    const pictures = firebase.storage().ref('pictures/users/'+bookId+'/'+this.afAuth.auth.currentUser.uid+'/'+0);
+    pictures.putString(this.photos[0], 'data_url');
+    return pictures.getDownloadURL().then(function(snapshot){
+      return snapshot;
+    });
   }
 
   async addExampler(bookId) {
-
     // Adds exampler to database
-
+    let picture_url;
     let ref = firebase.database().ref('examplers');
-    
-    // Adds Images to storage
-    await this.AddImages_Storage(bookId);
+
+    picture_url = await this.AddImagesStorage(bookId);
 
     let examplerKey = ref.push({
       'book_id': bookId,
       'comment': this.comment,
       'editorial': this.editorial,
       'owner_id': this.afAuth.auth.currentUser.uid,
-      'URLPhotos': this.photos
+      'DownloadURL': picture_url
     }).key;
 
 
-
     /// ALERTAS
-    this.presentAlert('LENGTH    ', this.photos.length);
+    /*this.presentAlert('LENGTH    ', this.photos.length);
 
     for (let j = 0; j < this.photos.length; j++) {
 
@@ -142,7 +138,7 @@ export class AboutPage {
         error => {
           this.presentAlert('ERROR', error);
         }
-      ));
+      ));*/
 
       // this.presentAlert('', JSON.stringify((firebase.storage().ref('examplers').child(examplerKey + '/' + j + '.jpg').put(this.photos[j]).then(
       //   uploadSnap => {
@@ -156,9 +152,9 @@ export class AboutPage {
       //     this.presentAlert('', error);
       //   }
       // )));
-    }
+    //}
 
-    this.presentAlert('', 'no buclesito');
+    /*this.presentAlert('', 'no buclesito');
 
     // Adds exampler id to user books
 
@@ -177,7 +173,7 @@ export class AboutPage {
             .child(examplerKey).set(examplerKey);
         }
       }
-    );
+    );*/
   }
 
   //alert confirm
