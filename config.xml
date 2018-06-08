@@ -102,9 +102,5 @@
     </plugin>
     <plugin name="cordova-plugin-nativegeocoder" spec="^3.1.1" />
     <allow-navigation href="http://192.168.5.87:8100" />
-<<<<<<< HEAD
-    <allow-navigation href="http://192.168.1.35:8100" />
-=======
->>>>>>> f394b9e0ab4e45722175c3bc67181cc123594141
     <engine name="android" spec="6.3.0" />
 </widget>

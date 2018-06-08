@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController } from 'ionic-angular';
+import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
 import { ImagePicker } from '@ionic-native/image-picker';
@@ -32,15 +32,18 @@ export class AboutPage {
     public picker: ImagePicker,
     public crop: Crop,
     public afAuth: AngularFireAuth,
+    private toastCtrl: ToastController,
     public afStrg: AngularFireStorage) {
     // this.tabBarElement = document.querySelector('.tabbar.show-tabbar'); //cojo el tab del html
-      this.photos = [];
+    this.photos = [];
   }
 
   // ionViewWillEnter() {//tab invisible
   //   this.tabBarElement.style.display = 'none';
   // }
 
+
+  // Saves book data
   uploadBook() {
     this.title = this.book['title'];
     this.author = this.book['author'];
@@ -48,12 +51,19 @@ export class AboutPage {
     this.comment = this.book['comment'];
 
 
-    if (this.photos.length > 0 && this.checkValue(this.title) && this.checkValue(this.author)) {
-
+    if (this.photos.length <= 0){
+      this.errorAlert('Debes incluir al menos una foto.');
+    }
+    else if (!this.checkValue(this.title)){
+      this.errorAlert('Por favor, indica un título de libro.');
+    }    
+    else if (!this.checkValue(this.author)){
+      this.errorAlert('Por favor, indica el autor del libro.');      
+    }
+    else{
       // CHECK IF BOOK IS ALREADY IN THE DATABASE
       firebase.database().ref('books').once('value').then(
-       async booksSnap => {
-          // this.presentAlert('', JSON.stringify(booksSnap));
+        async booksSnap => {
           let bookExist = false;
 
           let i = 0;
@@ -61,14 +71,14 @@ export class AboutPage {
 
           while (!bookExist && i < bookKeys.length) {
             let bookAux = booksSnap.val()[bookKeys[i]];
-            bookExist = (bookAux.title.toUpperCase() == this.title.toUpperCase());
+            bookExist = await (bookAux.title.toUpperCase() == this.title.toUpperCase());
             i++;
           }
 
           if (bookExist) {
 
             // IF IT IS, WE ADD AN EXAMPLER WITH ITS ID
-
+            
             this.addExampler(bookKeys[i - 1]);
           }
           else {
@@ -82,38 +92,42 @@ export class AboutPage {
             var bookId = ref.push({
               'author': this.author,
               'title': this.title
-            }).then(result => {
-              var bookId = result.key;
+            }).then(async result => {
+              var bookId = await result.key;
               this.addExampler(bookId);
             });
-        }
-       });
-
+          }
+        });
     }
   }
 
-  AddImagesStorage(bookId){
-    const pictures = firebase.storage().ref('pictures/users/'+bookId+'/'+this.afAuth.auth.currentUser.uid+'/'+0);
-    pictures.putString(this.photos[0], 'data_url');
-    return pictures.getDownloadURL().then(function(snapshot){
-      return snapshot;
+  async AddImagesStorage(bookId) {
+    const pictures = await firebase.storage().ref('users/' + this.afAuth.auth.currentUser.uid + '/examplers/' + bookId + '/' + 0 );
+    await pictures.putString(this.photos[0], 'data_url');
+    return pictures.getDownloadURL().then(async (snapshot) => {
+      return await snapshot;
     });
   }
 
   async addExampler(bookId) {
     // Adds exampler to database
     let picture_url;
+    var examplerKey;
     let ref = firebase.database().ref('examplers');
 
-    picture_url = await this.AddImagesStorage(bookId);
-
-    let examplerKey = ref.push({
-      'book_id': bookId,
-      'comment': this.comment,
-      'editorial': this.editorial,
-      'owner_id': this.afAuth.auth.currentUser.uid,
-      'DownloadURL': picture_url
-    }).key;
+    try {
+      examplerKey = await ref.push({
+        'book_id': bookId,
+        'comment': this.comment,
+        'editorial': this.editorial,
+        'owner_id': this.afAuth.auth.currentUser.uid
+      }).key;
+      picture_url = await this.AddImagesStorage(examplerKey);
+      firebase.database().ref('examplers/' + examplerKey).child('downloadURL').set(picture_url);
+    }
+    catch(error){
+      this.errorAlert(JSON.stringify(error));
+    }
 
 
     /// ALERTAS
@@ -140,21 +154,21 @@ export class AboutPage {
         }
       ));*/
 
-      // this.presentAlert('', JSON.stringify((firebase.storage().ref('examplers').child(examplerKey + '/' + j + '.jpg').put(this.photos[j]).then(
-      //   uploadSnap => {
-      //     this.presentAlert('', 'STRG ' + JSON.stringify(uploadSnap));
-      //     let refPic = uploadSnap.downloadURL;
-      //     this.presentAlert('','GETS DOWNLOAD URL' + refPic);
-      //     firebase.database().ref('examplers/' + examplerKey).child('pics').child(refPic).set(refPic);          
-      //   }
-      // ) ).catch(
-      //   error => {
-      //     this.presentAlert('', error);
-      //   }
-      // )));
+    // this.presentAlert('', JSON.stringify((firebase.storage().ref('examplers').child(examplerKey + '/' + j + '.jpg').put(this.photos[j]).then(
+    //   uploadSnap => {
+    //     this.presentAlert('', 'STRG ' + JSON.stringify(uploadSnap));
+    //     let refPic = uploadSnap.downloadURL;
+    //     this.presentAlert('','GETS DOWNLOAD URL' + refPic);
+    //     firebase.database().ref('examplers/' + examplerKey).child('pics').child(refPic).set(refPic);          
+    //   }
+    // ) ).catch(
+    //   error => {
+    //     this.presentAlert('', error);
+    //   }
+    // )));
     //}
 
-    /*this.presentAlert('', 'no buclesito');
+    /*this.presentAlert('', 'no buclesito');*/
 
     // Adds exampler id to user books
 
@@ -163,7 +177,7 @@ export class AboutPage {
         if (snap.hasChild('books')) {
           // If it already has one or more books saved, it directly saves the new exampler id
 
-          firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + 'books')
+          firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/books')
             .child(examplerKey).set(examplerKey);
         }
         else {
@@ -172,8 +186,12 @@ export class AboutPage {
           firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid).child('books')
             .child(examplerKey).set(examplerKey);
         }
+
+        this.infoAlert('¡Libro publicado con éxito!');
       }
-    );*/
+    ).catch(error => {
+      this.errorAlert(error);
+    });
   }
 
   //alert confirm
@@ -255,7 +273,7 @@ export class AboutPage {
     if (this.photos.length == 3) {
       this.MaxPhotosAlert();
     } else {
-      try{
+      try {
         let options: CameraOptions = {
           quality: 100,
           targetHeight: 600,
@@ -265,18 +283,18 @@ export class AboutPage {
           mediaType: this.camera.MediaType.PICTURE,
           correctOrientation: true
         }
-  
+
         const result = await this.camera.getPicture(options);
         const image = `data:image/jpeg;base64,${result}`;
-          // imageData is either a base64 encoded string or a file URI
-          // If it's base64:
-          this.path = image;
-          this.EditAlert();
-      }catch (e){
+        // imageData is either a base64 encoded string or a file URI
+        // If it's base64:
+        this.path = image;
+        this.EditAlert();
+      } catch (e) {
         console.log(e);
       }
+    }
   }
-}
 
   choosePicture() {
     if (this.photos.length == 3) {
@@ -291,7 +309,7 @@ export class AboutPage {
 
       // Por qué un for si solo deja coger una foto?
       this.picker.getPictures(option).then(results => {
-        this.presentAlert('dffs', JSON.stringify(results));
+        this.presentAlert('FOTO DE GALERIA', JSON.stringify(results));
         for (var i = 0; i < results.length; i++) {
           this.path = results[i];
           this.EditAlert()
@@ -347,5 +365,58 @@ export class AboutPage {
     alert.present();
   }
 
+  /////////////
+  // ALERTS //
+  ////////////
+
+  infoAlert(m) {
+    try {
+      var initalertCtrl = this.alertCtrl;
+      let alert = initalertCtrl.create({
+        title: '',
+        message: m,
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'alert',
+          }
+        ]
+      });
+      alert.present();
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  errorAlert(m) {
+    try {
+      var initalertCtrl = this.alertCtrl;
+      let alert = initalertCtrl.create({
+        title: 'Error',
+        message: m,
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'alert',
+          }
+        ]
+      });
+      alert.present();
+    }
+    catch (e) {
+      console.log(e);
+    }
+  }
+
+  uploadingToast(){
+    let toast = this.toastCtrl.create({
+      message: 'Publicando libro..',
+      duration: 3000,
+      position: 'middle'
+    });
+
+    toast.present();
+  }
 }
 
