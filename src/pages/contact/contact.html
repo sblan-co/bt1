@@ -55,7 +55,7 @@
       <ion-row no-padding>
         <ion-col col-4 no-padding *ngFor="let publication of user.publications; let id = index">
           <ion-card no-padding>
-            <img class="imagen" (click)="selectPhotos(id)" [src]='' > <!-- [src]="publication.img" /-->
+            <img class="imagen" (click)="selectPhotos(id)" [src]='publication.img' > <!-- [src]="publication.img" /-->
             <ion-card-content>
               <ion-card-title>
                 {{ publication.title }}

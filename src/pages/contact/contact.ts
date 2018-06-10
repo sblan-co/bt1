@@ -100,7 +100,7 @@ export class ContactPage {
 
                     // let imgKeys = Object.keys(snapExampler.val().pics);
 
-                    // book['img'] = snapExampler.val().pics[imgKeys[0]];
+                    book['img'] = snapExampler.val().downloadURL;
                     
                     this.user['publications'].push(book);
                   }

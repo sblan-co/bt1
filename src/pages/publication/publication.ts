@@ -16,7 +16,7 @@ export class PublicationPage {
   }
 
   imgError($event) {
-    $event.target['src'] = 'https://firebasestorage.googleapis.com/v0/b/booktrap-d814e.appspot.com/o/person.png?alt=media&token=05c4c25e-1187-4a01-b39a-e40dcfddfa40';
+    $event.target['src'] = 'https://firebasestorage.googleapis.com/v0/b/booktrap-d814e.appspot.com/o/whiteperson.png?alt=media&token=42d21c7e-6f14-473e-b361-81a901bb172f';
   }
 
 }
