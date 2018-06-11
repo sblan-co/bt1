@@ -10,9 +10,29 @@
         </ion-title>
     </ion-navbar>
     <ion-row>
-        <button ion-button class="top" color='booktrap' (click)="choosePicture();">
-            <ion-icon name="images"></ion-icon>
+        <button ion-button class="top" color='booktrap'>
+
+            <label for="file-input">
+                <ion-icon name="images"></ion-icon>
+
+            </label>
+
+
         </button>
+        <input id="file-input" hidden='true' name="picUpload" [(ngModel)]="picUpload" accept="image/*" type="file" (change)="changeListener($event)"
+        />
+        <!--
+        <button ion-button class="top" color='booktrap'> (click)="choosePicture();"
+            <ion-icon name="images"></ion-icon>
+
+            INPUT TRY 
+
+            <input name="picUpload" [(ngModel)]="picUpload" accept="image/*" type="file" (change)="changeListener($event)">
+
+
+
+
+        </button>-->
         <button ion-button class="top" color='booktrap' (click)="takePhoto();">
             <ion-icon name="camera"></ion-icon>
         </button>

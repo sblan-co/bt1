@@ -7,6 +7,7 @@ import { Crop } from '@ionic-native/crop';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireStorage } from 'angularfire2/storage';
+import { convertUrlToDehydratedSegments } from 'ionic-angular/navigation/url-serializer';
 
 
 @Component({
@@ -51,16 +52,16 @@ export class AboutPage {
     this.comment = this.book['comment'];
 
 
-    if (this.photos.length <= 0){
+    if (this.photos.length <= 0) {
       this.errorAlert('Debes incluir al menos una foto.');
     }
-    else if (!this.checkValue(this.title)){
+    else if (!this.checkValue(this.title)) {
       this.errorAlert('Por favor, indica un título de libro.');
-    }    
-    else if (!this.checkValue(this.author)){
-      this.errorAlert('Por favor, indica el autor del libro.');      
     }
-    else{
+    else if (!this.checkValue(this.author)) {
+      this.errorAlert('Por favor, indica el autor del libro.');
+    }
+    else {
       // CHECK IF BOOK IS ALREADY IN THE DATABASE
       firebase.database().ref('books').once('value').then(
         async booksSnap => {
@@ -78,7 +79,7 @@ export class AboutPage {
           if (bookExist) {
 
             // IF IT IS, WE ADD AN EXAMPLER WITH ITS ID
-            
+
             this.addExampler(bookKeys[i - 1]);
           }
           else {
@@ -102,12 +103,15 @@ export class AboutPage {
   }
 
   async AddImagesStorage(bookId) {
-    const pictures = await firebase.storage().ref('users/' + this.afAuth.auth.currentUser.uid + '/examplers/' + bookId + '/' + 0 );
+    const pictures = await firebase.storage().ref('users/' + this.afAuth.auth.currentUser.uid + '/examplers/' + bookId + '/' + 0);
     await pictures.putString(this.photos[0], 'data_url');
     return pictures.getDownloadURL().then(async (snapshot) => {
       return await snapshot;
     });
   }
+
+
+
 
   async addExampler(bookId) {
     // Adds exampler to database
@@ -122,11 +126,39 @@ export class AboutPage {
         'editorial': this.editorial,
         'owner_id': this.afAuth.auth.currentUser.uid
       }).key;
-      picture_url = await this.AddImagesStorage(examplerKey);
-      firebase.database().ref('examplers/' + examplerKey).child('downloadURL').set(picture_url);
+
+      // Si es un tipo file
+      if (typeof (this.photos[0].name) == 'string') {
+        this.infoAlert('FILE' + this.photos[0].name);
+        const filePath = 'users/' + this.afAuth.auth.currentUser.uid + '/examplers/' + bookId + '/' + this.photos[0].name;
+        // this.infoAlert('STRG' + JSON.stringify(this.afStrg));
+        const task = await this.afStrg.upload(filePath, this.photos[0]).then(
+          snap => {
+            this.infoAlert('SNAP' + JSON.stringify(snap));
+            return snap;
+          }
+        ).catch( e => this.errorAlert('ERROR EN UPLOAD' + JSON.stringify(e)));
+
+
+        this.infoAlert('BEFORE URL' + JSON.stringify(task));
+        task.downloadURL().subscribe(
+          async url => {
+            this.infoAlert('URLDMJN' + url);
+            picture_url = await url;
+          }
+        ).catch( e => {this.errorAlert(JSON.stringify(e));});
+        this.infoAlert('URL ' + task.downloadURL);
+      }
+      // Si no es un tipo file
+      else {
+        picture_url = await this.AddImagesStorage(examplerKey);
+      }
+
+      // firebase.database().ref('examplers/' + examplerKey).child('downloadURL').set(picture_url);
+
     }
-    catch(error){
-      this.errorAlert(JSON.stringify(error));
+    catch (error) {
+      this.errorAlert('AL SUBIR FOTO ' + JSON.stringify(error));
     }
 
 
@@ -304,20 +336,29 @@ export class AboutPage {
         title: 'Select Picture',
         message: 'Select Least I Picture',
         maximumImagesCount: 1,
-        outType: 0
+        outType: 1
       };
 
       // Por qué un for si solo deja coger una foto?
       this.picker.getPictures(option).then(results => {
-        this.presentAlert('FOTO DE GALERIA', JSON.stringify(results));
         for (var i = 0; i < results.length; i++) {
-          this.path = results[i];
+          this.path = `data:image/jpeg;base64,${results[i]}`;
+          this.presentAlert('FOTO DE GALERIA', this.path);
           this.EditAlert()
           //alert("Gallery Path: " + results[i]);
         }
       }, err => {
         //alert("Error " + err);
       })
+    }
+  }
+
+  changeListener($event): void {
+    if (this.photos.length == 3) {
+      this.MaxPhotosAlert();
+    } else {
+      this.path = $event.target.files[0];
+      this.photos.push(this.path);
     }
   }
 
@@ -409,7 +450,7 @@ export class AboutPage {
     }
   }
 
-  uploadingToast(){
+  uploadingToast() {
     let toast = this.toastCtrl.create({
       message: 'Publicando libro..',
       duration: 3000,
