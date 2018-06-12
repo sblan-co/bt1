@@ -17,6 +17,7 @@ import { convertUrlToDehydratedSegments } from 'ionic-angular/navigation/url-ser
 export class AboutPage {
   book = {};
   photos: any;
+  photosURLS: any;
   icons: string[] = ["1", "2", "3"];
   path: string;
   title: string;
@@ -37,6 +38,7 @@ export class AboutPage {
     public afStrg: AngularFireStorage) {
     // this.tabBarElement = document.querySelector('.tabbar.show-tabbar'); //cojo el tab del html
     this.photos = [];
+    this.photosURLS = [];
   }
 
   // ionViewWillEnter() {//tab invisible
@@ -51,6 +53,7 @@ export class AboutPage {
     this.editorial = this.book['editorial'];
     this.comment = this.book['comment'];
 
+    this.uploadingToast();
 
     if (this.photos.length <= 0) {
       this.errorAlert('Debes incluir al menos una foto.');
@@ -100,26 +103,38 @@ export class AboutPage {
           }
         });
     }
+
+    this.navCtrl.setRoot(AboutPage);
   }
 
-  async AddImagesStorage(bookId) {
-    const pictures = await firebase.storage().ref('users/' + this.afAuth.auth.currentUser.uid + '/examplers/' + bookId + '/' + 0);
-    await pictures.putString(this.photos[0], 'data_url');
-    return pictures.getDownloadURL().then(async (snapshot) => {
-      return await snapshot;
-    });
+  async AddImagesStorage(bookId){
+    var pics: string[] = [];
+
+    for (var i = 0; i < this.photos.length; i++) {
+      const pictures = await firebase.storage().ref('users/' + this.afAuth.auth.currentUser.uid + '/examplers/' + bookId + '/' + i);
+      if (typeof (this.photos[i].name) == 'string') {
+        await pictures.put(this.photos[i]);
+      }
+      else {
+        await pictures.putString(this.photos[i], 'data_url');
+      }
+
+      await pictures.getDownloadURL().then(
+        async (snapshot) => {
+          pics.push(await snapshot);
+        });
+    }
+
+    return pics;
   }
-
-
-
 
   async addExampler(bookId) {
-    // Adds exampler to database
     let picture_url;
     var examplerKey;
     let ref = firebase.database().ref('examplers');
 
     try {
+      // Adds exampler to database
       examplerKey = await ref.push({
         'book_id': bookId,
         'comment': this.comment,
@@ -127,80 +142,16 @@ export class AboutPage {
         'owner_id': this.afAuth.auth.currentUser.uid
       }).key;
 
-      // Si es un tipo file
-      if (typeof (this.photos[0].name) == 'string') {
-        this.infoAlert('FILE' + this.photos[0].name);
-        const filePath = 'users/' + this.afAuth.auth.currentUser.uid + '/examplers/' + bookId + '/' + this.photos[0].name;
-        // this.infoAlert('STRG' + JSON.stringify(this.afStrg));
-        const task = await this.afStrg.upload(filePath, this.photos[0]).then(
-          snap => {
-            this.infoAlert('SNAP' + JSON.stringify(snap));
-            return snap;
-          }
-        ).catch( e => this.errorAlert('ERROR EN UPLOAD' + JSON.stringify(e)));
+      // Uploads pics
+      picture_url = await this.AddImagesStorage(examplerKey);
 
-
-        this.infoAlert('BEFORE URL' + JSON.stringify(task));
-        task.downloadURL().subscribe(
-          async url => {
-            this.infoAlert('URLDMJN' + url);
-            picture_url = await url;
-          }
-        ).catch( e => {this.errorAlert(JSON.stringify(e));});
-        this.infoAlert('URL ' + task.downloadURL);
-      }
-      // Si no es un tipo file
-      else {
-        picture_url = await this.AddImagesStorage(examplerKey);
-      }
-
-      // firebase.database().ref('examplers/' + examplerKey).child('downloadURL').set(picture_url);
+      // Saves pics urls on exampler
+      firebase.database().ref('examplers/' + examplerKey).child('downloadURL').set(picture_url.toString());
 
     }
     catch (error) {
       this.errorAlert('AL SUBIR FOTO ' + JSON.stringify(error));
     }
-
-
-    /// ALERTAS
-    /*this.presentAlert('LENGTH    ', this.photos.length);
-
-    for (let j = 0; j < this.photos.length; j++) {
-
-      let strgRef = firebase.storage().ref('/examplers').child(examplerKey + '/' + j + '.jpg');
-      this.presentAlert('ref', strgRef);
-
-      //const task = this.storage.upload(filePath, file);
-      // console.log('Uploaded to '+JSON.stringify(task.downloadURL()) );
-
-      let task = JSON.stringify(strgRef.put(this.photos[j].base64).then(
-        uploadSnap => {
-          this.presentAlert('', 'STRG ' + JSON.stringify(uploadSnap.ref.getDownloadURL()));
-          let refPic = uploadSnap.ref.getDownloadURL();
-          this.presentAlert('', 'GETS DOWNLOAD URL' + refPic);
-          firebase.database().ref('examplers/' + examplerKey).child('pics').child('' + refPic).set(refPic);
-        }
-      ).catch(
-        error => {
-          this.presentAlert('ERROR', error);
-        }
-      ));*/
-
-    // this.presentAlert('', JSON.stringify((firebase.storage().ref('examplers').child(examplerKey + '/' + j + '.jpg').put(this.photos[j]).then(
-    //   uploadSnap => {
-    //     this.presentAlert('', 'STRG ' + JSON.stringify(uploadSnap));
-    //     let refPic = uploadSnap.downloadURL;
-    //     this.presentAlert('','GETS DOWNLOAD URL' + refPic);
-    //     firebase.database().ref('examplers/' + examplerKey).child('pics').child(refPic).set(refPic);          
-    //   }
-    // ) ).catch(
-    //   error => {
-    //     this.presentAlert('', error);
-    //   }
-    // )));
-    //}
-
-    /*this.presentAlert('', 'no buclesito');*/
 
     // Adds exampler id to user books
 
@@ -237,8 +188,6 @@ export class AboutPage {
           role: 'cancel',
           handler: () => {
             console.log('Cancelar clicado');
-            this.photos.push(this.path);
-            this.photos.reverse();
             this.icons.splice(0, 1);
           }
         },
@@ -295,9 +244,9 @@ export class AboutPage {
   //   this.tabBarElement.style.display = 'flex';
   // }
 
-  takeMeBack() {//volver a atras boton
-    this.navCtrl.parent.select(0);
-  }
+  // takeMeBack() {//volver a atras boton
+  //   this.navCtrl.parent.select(0);
+  // }
 
   // PICTURES MANAGEMENT
 
@@ -321,37 +270,41 @@ export class AboutPage {
         // imageData is either a base64 encoded string or a file URI
         // If it's base64:
         this.path = image;
+
         this.EditAlert();
+        this.photos.push(this.path);
+        this.photosURLS.push(this.path);
+        this.photos.reverse();
       } catch (e) {
         console.log(e);
       }
     }
   }
 
-  choosePicture() {
-    if (this.photos.length == 3) {
-      this.MaxPhotosAlert();
-    } else {
-      let option = {
-        title: 'Select Picture',
-        message: 'Select Least I Picture',
-        maximumImagesCount: 1,
-        outType: 1
-      };
+  // choosePicture() {
+  //   if (this.photos.length == 3) {
+  //     this.MaxPhotosAlert();
+  //   } else {
+  //     let option = {
+  //       title: 'Select Picture',
+  //       message: 'Select Least I Picture',
+  //       maximumImagesCount: 1,
+  //       outType: 1
+  //     };
 
-      // Por qué un for si solo deja coger una foto?
-      this.picker.getPictures(option).then(results => {
-        for (var i = 0; i < results.length; i++) {
-          this.path = `data:image/jpeg;base64,${results[i]}`;
-          this.presentAlert('FOTO DE GALERIA', this.path);
-          this.EditAlert()
-          //alert("Gallery Path: " + results[i]);
-        }
-      }, err => {
-        //alert("Error " + err);
-      })
-    }
-  }
+  //     // Por qué un for si solo deja coger una foto?
+  //     this.picker.getPictures(option).then(results => {
+  //       for (var i = 0; i < results.length; i++) {
+  //         this.path = `data:image/jpeg;base64,${results[i]}`;
+  //         this.presentAlert('FOTO DE GALERIA', this.path);
+  //         this.EditAlert()
+  //         //alert("Gallery Path: " + results[i]);
+  //       }
+  //     }, err => {
+  //       //alert("Error " + err);
+  //     })
+  //   }
+  // }
 
   changeListener($event): void {
     if (this.photos.length == 3) {
@@ -359,6 +312,12 @@ export class AboutPage {
     } else {
       this.path = $event.target.files[0];
       this.photos.push(this.path);
+
+      var reader = new FileReader();
+      reader.onload = e => {
+        this.photosURLS.push(reader.result);
+      };
+      reader.readAsDataURL($event.target.files[0]);
     }
   }
 
@@ -371,12 +330,8 @@ export class AboutPage {
 
     this.crop.crop(this.path, option).then(newImgeUrl => {
       this.path = newImgeUrl;
-      this.photos.push(this.path);
-      this.photos.reverse();
       this.icons.splice(0, 1);
     }, err => {
-      this.photos.push(this.path);
-      this.photos.reverse();
       this.icons.splice(0, 1);
     });
   }
@@ -398,6 +353,7 @@ export class AboutPage {
           handler: () => {
             console.log('Aceptar clicado');
             this.photos.splice(index, 1);
+            this.photosURLS.splice(index, 1);
             this.icons.push("" + index);
           }
         }
@@ -453,7 +409,7 @@ export class AboutPage {
   uploadingToast() {
     let toast = this.toastCtrl.create({
       message: 'Publicando libro..',
-      duration: 3000,
+      duration: 7000,
       position: 'middle'
     });
 

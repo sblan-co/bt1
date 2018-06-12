@@ -41,7 +41,7 @@
 
 <ion-content padding>
     <ion-item no-lines class="item-row">
-        <div item-content class="border-imagen" *ngFor="let photo of photos; let id = index">
+        <div item-content class="border-imagen" *ngFor="let photo of photosURLS; let id = index">
             <img class="imagen" (click)="deletePhotos(id)" [src]="photo" />
         </div>
         <div item-content class="border-icono" *ngFor="let icon of icons;">
