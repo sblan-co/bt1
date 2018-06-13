@@ -4,12 +4,12 @@
       {{ user.firstname }}
     </ion-title>
     <ion-buttons left>
-      <button ion-button color="light" icon-only clear>
+      <button ion-button [hidden]='external' color="light" icon-only clear>
         <ion-icon name="mail"></ion-icon>
       </button>
     </ion-buttons>
     <ion-buttons right>
-      <button ion-button color="light" icon-only clear (click)="showMoreOptions($event)">
+      <button ion-button [hidden]='external' color="light" icon-only clear (click)="showMoreOptions($event)">
         <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
@@ -28,11 +28,12 @@
       <!-- <ion-label>10 Préstamos</ion-label> -->
       <ion-label>{{ user.nExchanges }} Intercambios</ion-label>
       <ion-label>
-        <ion-icon name="pin"></ion-icon>&nbsp;{{ user.city }}</ion-label>
+        <ion-icon name="pin"></ion-icon>&nbsp;{{ user.city }}
+      </ion-label>
     </div>
   </div>
   <div item-content class="row">
-    <button ion-button full color="booktrap" (click)="EditProfile()">Editar Perfil</button>
+    <button ion-button full [hidden]='external' color="booktrap" (click)="EditProfile()">Editar Perfil</button>
   </div>
   <div item-content class="row">
     <ion-segment [(ngModel)]="libros" color="booktrap">
@@ -55,7 +56,7 @@
       <ion-row no-padding>
         <ion-col col-4 no-padding *ngFor="let publication of user.publications; let id = index">
           <ion-card no-padding>
-            <img class="imagen" (click)="selectPhotos(id)" [src]='publication.img' > <!-- [src]="publication.img" /-->
+            <img class="imagen" (click)="selectPhotos(id)" [src]='publication.img'>
             <ion-card-content>
               <ion-card-title>
                 {{ publication.title }}

@@ -7,6 +7,29 @@
 </ion-header>
 
 <ion-content class="ion-content" padding class="fondo">
+
+  <ion-item no-lines class="item-row" color='booktrap'>
+
+  
+    <div *ngIf="picSelected; else other_content">
+      <div item-content class="border-imagen" color='booktrap'>
+        <img class="imagen" (click)="deletePhoto()" [src]="path" />
+      </div>
+    </div>
+
+    <ng-template #other_content>
+      <label for="file-input">
+        <div item-content class="border-icono">
+          <ion-icon class="icono" color='white' name="camera"></ion-icon>
+        </div>
+      </label>
+      <input id="file-input" hidden='true' name="picUpload" [(ngModel)]="picUpload" accept="image/*" type="file" (change)="changeListener($event)"
+    />
+    </ng-template>
+
+  </ion-item>
+
+
   <ion-grid class="grid" class="fondo">
 
     <form (ngSubmit)="logForm()" class="input">
@@ -51,11 +74,12 @@
         <ion-input type="password" name="pass2" placeholder="Repita la contraseña" text-input-placeholder-color="light" [(ngModel)]="user.pass2"></ion-input>
 
       </ion-item>
-      
+
       <p></p>
 
       <ion-row class="fondo">
-        <button [disabled]="!user.firstname || !user.surname || !user.email || !user.pass1 || !user.pass2" ion-button block color="light" type="submit" class="logIn-button">Confirmar</button>
+        <button [disabled]="!user.firstname || !user.surname || !user.email || !user.pass1 || !user.pass2" ion-button block color="light"
+          type="submit" class="logIn-button">Confirmar</button>
       </ion-row>
     </form>
 

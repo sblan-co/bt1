@@ -11,4 +11,51 @@ page-sign-up {
     {
         color: #ffffff;
     }
+
+    .item-row{
+        // max-height: 11%;
+        // margin-left: -10%;
+    }
+    .border-icono{
+        ion-icon {
+            font-size: 30px; //Preferred size here
+        } 
+
+        display: table;
+        text-align: center;
+        border-style: dotted;
+        color: #75cbff;
+        width: 3em;
+        height: 6em;
+
+        width: 50%; 
+        margin: 0 auto;
+
+
+        // margin-left: 10%;
+        // float: left;   
+        border-radius: 5px;
+        color:white;
+    }
+    .border-imagen{
+        display: table;
+        text-align: center;
+        width: 20%;
+        height: 100%;
+        margin-left: 10%;
+        border-radius: 5px;
+        float: left;  
+    }
+    .icono{
+        display: table-cell;
+        vertical-align: middle;
+        font-size: 100%;
+        //margin-top: 15%; //NO ESTÁ CENTRADO EL ICONO/IMAGEN, SE HACE MANUAL
+    }
+    .imagen{
+        display: table-cell;
+        width: 100%;
+        height: 100%;
+        border-radius: 5px; 
+    }
 }

@@ -46,14 +46,12 @@ export class AboutPage {
   // }
 
 
-  // Saves book data
+  // Saves book data in firebase database
   uploadBook() {
     this.title = this.book['title'];
     this.author = this.book['author'];
     this.editorial = this.book['editorial'];
     this.comment = this.book['comment'];
-
-    this.uploadingToast();
 
     if (this.photos.length <= 0) {
       this.errorAlert('Debes incluir al menos una foto.');
@@ -65,6 +63,7 @@ export class AboutPage {
       this.errorAlert('Por favor, indica el autor del libro.');
     }
     else {
+      this.uploadingToast();
       // CHECK IF BOOK IS ALREADY IN THE DATABASE
       firebase.database().ref('books').once('value').then(
         async booksSnap => {
@@ -102,9 +101,9 @@ export class AboutPage {
             });
           }
         });
+        this.navCtrl.setRoot(AboutPage);
     }
 
-    this.navCtrl.setRoot(AboutPage);
   }
 
   async AddImagesStorage(bookId){

@@ -19,6 +19,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
   templateUrl: 'contact.html'
 })
 export class ContactPage {
+  external: boolean;
   books: string;
   user: any;
   publications: string[] = ["https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg"];
@@ -31,16 +32,17 @@ export class ContactPage {
 
       
       this.user = {};
+      this.external = false;
 
       platform.ready().then(
         async () => {
           
           if (!this.checkValue(localStorage.getItem('selectedPublication'))) {
-            external = false;
+            this.external = false;
             this.user['uid'] = await this.afAuth.auth.currentUser.uid;
           }
           else {
-            external = true;
+            this.external = true;
             let pub = localStorage.getItem('selectedPublication');
             this.user['uid'] = await pub['uid'];
           }
@@ -98,9 +100,9 @@ export class ContactPage {
                     // DESCOMENTAR CUANDO CONSIGAMOS INSERTAR IMAGENES
                     //
 
-                    // let imgKeys = Object.keys(snapExampler.val().pics);
+                    var imgKeys = snapExampler.val().downloadURL.split(',');
 
-                    book['img'] = snapExampler.val().downloadURL;
+                    book['img'] = imgKeys[0];
                     
                     this.user['publications'].push(book);
                   }
