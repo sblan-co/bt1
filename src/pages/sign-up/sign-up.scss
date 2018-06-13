@@ -40,11 +40,18 @@ page-sign-up {
     .border-imagen{
         display: table;
         text-align: center;
-        width: 20%;
-        height: 100%;
-        margin-left: 10%;
+        // width: 20%;
+        // height: 100%;
+        width: 3em;
+        height: 6em;
+
+        width: 50%; 
+        margin: 0 auto;
+
+
+        // margin-left: 10%;
         border-radius: 5px;
-        float: left;  
+        // float: left;  
     }
     .icono{
         display: table-cell;

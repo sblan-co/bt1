@@ -54,9 +54,9 @@
   <div [ngSwitch]="books">
     <ion-grid *ngSwitchCase="'Publications'" no-padding>
       <ion-row no-padding>
-        <ion-col col-4 no-padding *ngFor="let publication of user.publications; let id = index">
-          <ion-card no-padding>
-            <img class="imagen" (click)="selectPhotos(id)" [src]='publication.img'>
+        <ion-col col-4 no-padding *ngFor="let publication of user.publications">
+          <ion-card no-padding (click)="selectPhotos(publication.id)">
+            <img class="imagen" [src]='publication.img'>
             <ion-card-content>
               <ion-card-title>
                 {{ publication.title }}

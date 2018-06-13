@@ -13,7 +13,6 @@ declare var google: any;
 export class SignUpPage {
   picSelected: boolean;
   profilePic: any;
-  icon: any;
   path: any;
   user = {};
 
@@ -23,12 +22,11 @@ export class SignUpPage {
     public alertCtrl: AlertController,
     private geolocation: Geolocation) {
     this.picSelected = false;
-    this.icon = '1';
   }
 
   async logForm() {
     let location = await this.get_location();
-    console.log('Create Account..' + JSON.stringify(this.user));
+    this.presentAlert('','Create Account..' + JSON.stringify(this.user));
 
     if (this.user['pass1'] === this.user['pass2']) {
       let firstName: string = this.user['firstname'];
@@ -43,8 +41,8 @@ export class SignUpPage {
       localStorage.setItem('password', password);
 
       this.afAuth.auth.createUserWithEmailAndPassword(email, password).then(
-        user => {
-          firebase.auth().onAuthStateChanged(user => {
+        () => {
+          firebase.auth().onAuthStateChanged(async user => {
             if (user) {
 
               let userRef = firebase.database().ref('/users/' + user.uid);
@@ -60,6 +58,13 @@ export class SignUpPage {
                 'lat': lat,
                 'lon': lon
               });
+
+              if (this.picSelected) {
+                this.presentAlert('', 'pic selected');
+                var picture_url = await this.AddImagesStorage(user.uid);
+                firebase.database().ref('/users/' + user.uid).child('profilePic').set(picture_url);
+              }
+
 
               //this.navCtrl.push(TabsPage);
             } else {
@@ -103,6 +108,21 @@ export class SignUpPage {
       });
 
       alert.present();
+    }
+  }
+
+  async AddImagesStorage(uid) {
+    try {
+      const pictures = await firebase.storage().ref('users/' + uid + '/profile/' + this.profilePic.name);
+      await pictures.put(this.profilePic);
+      return await pictures.getDownloadURL().then(
+        async (snapshot) => {
+          return await snapshot;
+        }
+      );
+    }
+    catch (error) {
+      console.log(JSON.stringify(error));
     }
   }
 
@@ -170,7 +190,6 @@ export class SignUpPage {
       }
     });
   }
-
 
   presentAlert(t, m) {
     try {

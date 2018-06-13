@@ -90,9 +90,9 @@ export class ContactPage {
                     // Buscamos el nombre del libro
                     await firebase.database().ref('books/' + snapExampler.val().book_id).once('value').then(
                       snapBook => {
-                        console.log('BOOK ' + JSON.stringify(snapBook));
+                        // console.log('BOOK ' + JSON.stringify(snapBook));
                         book['title'] = snapBook.val().title;
-                        console.log('TITLE ' + book['title']);
+                        // console.log('TITLE ' + book['title']);
                       }
                     );
 
@@ -103,6 +103,7 @@ export class ContactPage {
                     var imgKeys = snapExampler.val().downloadURL.split(',');
 
                     book['img'] = imgKeys[0];
+                    book['id'] = k;
                     
                     this.user['publications'].push(book);
                   }
@@ -131,7 +132,8 @@ export class ContactPage {
     });
   }
 
-  selectPhotos(index) {
+  selectPhotos(id) {
+    localStorage.setItem('selectedPublication', id);
     this.navCtrl.push(PublicationPage);
   }
 
