@@ -13,25 +13,30 @@ import { ContactPage } from '../contact/contact';
 })
 export class PublicationPage {
   tabBarElement: any;
-  examplerId: any;
   owner: boolean;
+  exampler: any;
 
   constructor(
     platform: Platform,
     public navCtrl: NavController) {
-    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
-    this.examplerId = localStorage.getItem('selectedPublication');
+      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+      this.exampler = [];
 
-    platform.ready().then(
-      async () => {
-        this.owner = this.isOwner();
-        this.getBookData();
-      }
-    );
+      platform.ready().then(
+        async () => {
+          this.owner = this.isOwner();
+          var pubAux = JSON.parse(localStorage.getItem('selectedPublication'));
+          console.log(JSON.stringify(pubAux));
+          this.exampler['title'] = pubAux.title;
+          this.exampler['author'] = pubAux.author;
+          this.exampler['id'] = pubAux.id;
+          await this.getBookData();
+        }
+      );
   }
 
   takeMeBack() {//volver a atras boton
-    this.navCtrl.setRoot(ContactPage);
+    this.navCtrl.push(ContactPage);
   }
 
   isOwner(): boolean {
@@ -40,70 +45,27 @@ export class PublicationPage {
   }
 
   async getBookData() {
-    // await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid).once('value').then(
-    //   async snapshot => {
-    //     this.user['firstname'] = snapshot.val().firstname;
-    //     this.user['lat'] = snapshot.val().lat;
-    //     this.user['lon'] = snapshot.val().lon;
-    //     this.user['city'] = snapshot.val().city;
+    // console.log(this.exampler.id);
+    await firebase.database().ref('examplers/' + this.exampler.id).once('value').then(
+      async snapshot => {
+        // console.log(JSON.stringify(snapshot));
+        this.exampler['editorial'] = snapshot.val().editorial;
+        this.exampler['comment'] = snapshot.val().comment;
+        this.exampler['pics'] = snapshot.val().downloadURL.split(',');
 
-    //     if (snapshot.hasChild('exchanges')) {
-    //       await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/exchanges').once('value').then(
-    //         snapExchanges => {
-    //           this.user['nExchanges'] = Object.keys(snapExchanges.val()).length;
-    //         }
-    //       );
-    //     }
-    //     else {
-    //       this.user['nExchanges'] = 0;
-    //     }
-
-    //     this.user['publications'] = [];
-
-    //     if (snapshot.hasChild('books')) {
-    //       await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/books').once('value').then(
-    //         async snapBooks => {
-
-    //           // Sacamos las keys de los ejemplares publicados por el usuario
-    //           let bookKeys = Object.keys(snapBooks.val());
-
-    //           // Sacamos los datos de dichos ejemplares              
-    //           for (let k of bookKeys) {
-    //             await firebase.database().ref('examplers/' + k).once('value').then(
-    //               async snapExampler => {
-    //                 let book = {};
-
-    //                 // Buscamos el nombre del libro
-    //                 await firebase.database().ref('books/' + snapExampler.val().book_id).once('value').then(
-    //                   snapBook => {
-    //                     // console.log('BOOK ' + JSON.stringify(snapBook));
-    //                     book['title'] = snapBook.val().title;
-    //                     // console.log('TITLE ' + book['title']);
-    //                   }
-    //                 );
-
-    //                 //
-    //                 // DESCOMENTAR CUANDO CONSIGAMOS INSERTAR IMAGENES
-    //                 //
-
-    //                 var imgKeys = snapExampler.val().downloadURL.split(',');
-
-    //                 book['img'] = imgKeys[0];
-    //                 book['id'] = k;
-
-    //                 this.user['publications'].push(book);
-    //               }
-    //             );
-    //           }
-    //         }
-    //       );
-    //     }
-    //   }
-    // );
+        await firebase.database().ref('users/' + snapshot.val().owner_id).once('value').then(
+          async snapOwner => {
+            this.exampler['owner_name'] = snapOwner.val().firstname;
+            this.exampler['owner_city'] = snapOwner.val().city;
+            this.exampler['owner_pic'] = (snapOwner.hasChild('profilePic')) ? snapOwner.val().profilePic : '';
+          }
+        );
+      }
+    );
   }
 
   imgError($event) {
-    $event.target['src'] = 'https://firebasestorage.googleapis.com/v0/b/booktrap-d814e.appspot.com/o/whiteperson.png?alt=media&token=42d21c7e-6f14-473e-b361-81a901bb172f';
+    $event.target['src'] = 'https://firebasestorage.googleapis.com/v0/b/booktrap-d814e.appspot.com/o/person.png?alt=media&token=05c4c25e-1187-4a01-b39a-e40dcfddfa40';
   }
 
   ionViewWillLeave() {//tab visible al abandonar

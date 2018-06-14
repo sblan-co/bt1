@@ -60,6 +60,7 @@ export class ContactPage {
         this.user['lat'] = snapshot.val().lat;
         this.user['lon'] = snapshot.val().lon;
         this.user['city'] = snapshot.val().city;
+        this.user['profilePic'] = snapshot.val().profilePic;
         
         if (snapshot.hasChild('exchanges')){
           await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/exchanges').once('value').then(
@@ -92,6 +93,7 @@ export class ContactPage {
                       snapBook => {
                         // console.log('BOOK ' + JSON.stringify(snapBook));
                         book['title'] = snapBook.val().title;
+                        book['author'] = snapBook.val().author;
                         // console.log('TITLE ' + book['title']);
                       }
                     );
@@ -116,6 +118,10 @@ export class ContactPage {
     );
   }
 
+  imgError($event) {
+    $event.target['src'] = 'https://firebasestorage.googleapis.com/v0/b/booktrap-d814e.appspot.com/o/whiteperson.png?alt=media&token=42d21c7e-6f14-473e-b361-81a901bb172f';
+  }
+  
   checkValue(str: any): boolean {
     return ((str !== '') && (str != null) && (str !== 'null') && (str !== 'undefined'));
   }
@@ -132,8 +138,9 @@ export class ContactPage {
     });
   }
 
-  selectPhotos(id) {
-    localStorage.setItem('selectedPublication', id);
+  selectPhotos(pub) {
+    console.log(JSON.stringify(pub));
+    localStorage.setItem('selectedPublication', JSON.stringify(pub));
     this.navCtrl.push(PublicationPage);
   }
 

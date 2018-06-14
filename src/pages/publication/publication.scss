@@ -8,4 +8,21 @@ page-publication{
         height: 100%;
         text-align: center;
     }
+
+    .imagenes{
+        max-height: 40%;
+        align-content: center;
+        text-align: center;
+    }
+    
+    .foto {
+        // position: absolute;  
+        top: 0;  
+        bottom: 0;  
+        left: 0;  
+        right: 0;  
+        height: 100%;
+        width: 100%;
+        margin: 0 auto;
+    }
 }

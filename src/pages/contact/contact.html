@@ -20,8 +20,7 @@
   <div item-content class="row">
     <div item-content id="avatar-image">
       <ion-avatar color="booktrap">
-        <img src="https://cdn7.bigcommerce.com/s-ydriczk/images/stencil/1280x1280/products/86797/86350/Goofy_Face_Mask_buy_Disney_star_masks_at_starstills__44875__11278.1394515602.jpg?c=2?imbypass=on"
-          imageViewer>
+        <img src="{{ user.profilePic }}" (error)="imgError($event)" imageViewer>
       </ion-avatar>
     </div>
     <div item-content id="info">
@@ -55,7 +54,7 @@
     <ion-grid *ngSwitchCase="'Publications'" no-padding>
       <ion-row no-padding>
         <ion-col col-4 no-padding *ngFor="let publication of user.publications">
-          <ion-card no-padding (click)="selectPhotos(publication.id)">
+          <ion-card no-padding (click)="selectPhotos(publication)">
             <img class="imagen" [src]='publication.img'>
             <ion-card-content>
               <ion-card-title>
