@@ -30,23 +30,25 @@ export class HomePage {
          try{
           var imgURL = snapshot.val().downloadURL.split(',');
           var distance = this.distance(this.lat_user, this.lon_user, snapshot.val().lat, snapshot.val().lon);
-          var tittle; 
+          var title; 
           var author;
           var id = snapshot.key;
+          var owner_id = snapshot.val().owner_id;
           if(!distance){
             distance = 99999999;
           }
           const urlExamplers = imgURL[0];
           await firebase.database().ref('books/' + snapshot.val().book_id).once('value').then(
             snapBook => {
-              tittle = snapBook.val().title;
+              title = snapBook.val().title;
               author = snapBook.val().author;
             }
           );
-          let orderDistances = { "img": urlExamplers, "distance": distance, "tittle": tittle, "author": author, "id": id};
+          let orderDistances = { "img": urlExamplers, "distance": distance, "title": title,
+             "author": author, "id": id, 'owner_id': owner_id};
           await this.images.push(orderDistances);
           this.images.sort((a,b) => {
-            return a.distance - b.distance
+            return a.distance - b.distance;
           });
          }catch{}
       });
@@ -115,7 +117,6 @@ export class HomePage {
   }
 
   selectPhotos(pub) {
-    console.log(JSON.stringify(pub));
     localStorage.setItem('selectedPublication', JSON.stringify(pub));
     this.navCtrl.push(PublicationPage);
   }

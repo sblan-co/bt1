@@ -4,7 +4,7 @@
       {{ user.firstname }}
     </ion-title>
     <ion-buttons left>
-      <button ion-button color="light" icon-only clear>
+      <button ion-button color="light" icon-only clear (click)="showExchanges($event)">
         <ion-icon name="mail"></ion-icon>
       </button>
     </ion-buttons>

@@ -294,30 +294,6 @@ export class AboutPage implements OnInit{
     }
   }
 
-  // choosePicture() {
-  //   if (this.photos.length == 3) {
-  //     this.MaxPhotosAlert();
-  //   } else {
-  //     let option = {
-  //       title: 'Select Picture',
-  //       message: 'Select Least I Picture',
-  //       maximumImagesCount: 1,
-  //       outType: 1
-  //     };
-
-  //     // Por qué un for si solo deja coger una foto?
-  //     this.picker.getPictures(option).then(results => {
-  //       for (var i = 0; i < results.length; i++) {
-  //         this.path = `data:image/jpeg;base64,${results[i]}`;
-  //         this.presentAlert('FOTO DE GALERIA', this.path);
-  //         this.EditAlert()
-  //         //alert("Gallery Path: " + results[i]);
-  //       }
-  //     }, err => {
-  //       //alert("Error " + err);
-  //     })
-  //   }
-  // }
 
   changeListener($event): void {
     if (this.photos.length == 3) {

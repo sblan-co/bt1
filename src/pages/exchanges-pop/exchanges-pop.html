@@ -1,0 +1,8 @@
+<ion-list>
+    <button ion-item *ngFor='let exchange of exchanges' (click)="showExchange(exchange)">
+        Nueva notificación
+    </button>
+    <!-- <ion-item *ngIf = "exchange == null"> 
+        No hay intercambios.
+    </ion-item> -->
+</ion-list>

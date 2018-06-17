@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 // Firebase
 import * as firebase from 'firebase/app';
+import { AngularFireAuth } from 'angularfire2/auth';
 
 // Ionic-Angular
 import { NavController, Platform } from 'ionic-angular';
@@ -12,7 +13,7 @@ import { PopoverController } from 'ionic-angular';
 import { ProfilePage } from '../profile/profile';
 import { PublicationPage } from '../publication/publication';
 import { MoreOptionsPage } from '../more-options/more-options';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { ExchangesPopPage } from '../exchanges-pop/exchanges-pop';
 
 @Component({
   selector: 'page-contact',
@@ -29,7 +30,6 @@ export class ContactPage {
     public navCtrl: NavController, 
     public popoverCtrl: PopoverController,
     public afAuth: AngularFireAuth) {
-
       
       this.user = {};
       this.external = false;
@@ -134,6 +134,13 @@ export class ContactPage {
   showMoreOptions($event)
   {
     let popover = this.popoverCtrl.create(MoreOptionsPage);
+    popover.present({
+      ev: $event
+    });
+  }
+
+  showExchanges($event){    
+    let popover = this.popoverCtrl.create(ExchangesPopPage);
     popover.present({
       ev: $event
     });

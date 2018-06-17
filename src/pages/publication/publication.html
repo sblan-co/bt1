@@ -59,9 +59,13 @@
 
     <ion-row>
         <ion-col>
-            <button ion-button block color="booktrap" [hidden]='owner' icon-start class="options-buttons">
+            <button ion-button block color="booktrap" [hidden]='owner' icon-start class="options-buttons" (click)='showExchangeAlert()'>
                 Solicitar Intercambio
                 <ion-icon style='padding-left: 5%' name="bookmarks"></ion-icon>
+            </button>
+            <button ion-button block color="booktrap" [hidden]='!owner' icon-start class="options-buttons" (click)='showDeleteAlert()'>
+                Eliminar publicación
+                <ion-icon style='padding-left: 5%' name="close"></ion-icon>
             </button>
         </ion-col>
     </ion-row>

@@ -1,0 +1,55 @@
+<ion-header>
+    <ion-navbar color="booktrap" hideBackButton="true">
+        <ion-title>
+            Intercambio
+        </ion-title>
+        <ion-buttons left>
+            <button ion-button color="light" icon-only clear (click)="takeMeBack()">
+                <ion-icon name="arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+<!--prueba para git, se puede eliminar este comentario-->
+<ion-content>
+    <div item-content class="row">
+        <div item-content id="avatar-image">
+            <ion-avatar color="booktrap">
+                <img src="{{ requester.profilePic }}" (error)="imgError($event)" imageViewer>
+            </ion-avatar>
+        </div>
+
+        <div item-content id="info">
+            <ion-label>{{ requester.firstname }}</ion-label>
+            <ion-label>
+                <ion-icon name="pin"></ion-icon>&nbsp;{{ requester.city }}
+            </ion-label>
+            <ion-label>
+                <ion-icon name="call"></ion-icon>&nbsp;{{ requester.tlf }}
+            </ion-label>
+        </div>
+    </div>
+    <ion-item>
+        <div style='max-height: 20%;'>
+            <img style='max-height: 20%;' src='{{ exampler.pic }}'>
+        </div>
+    </ion-item>
+
+    <div>
+        {{ requester.firstname }} está interesado/a en tu libro "{{ exampler.title }}" de {{ exampler.author }}.
+    </div>
+</ion-content>
+
+
+<ion-footer>
+
+    <ion-row>
+        <ion-col>
+            <button ion-button block color="booktrap" icon-start class="options-buttons" (click)='showDeleteAlert()'>
+                Eliminar Intercambio
+                <ion-icon style='padding-left: 5%' name="close"></ion-icon>
+            </button>
+        </ion-col>
+    </ion-row>
+
+</ion-footer>
