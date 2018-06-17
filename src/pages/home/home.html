@@ -1,21 +1,25 @@
 <ion-header>
   <ion-navbar color='booktrap'>
     <ion-item color='booktrap'>
-      <ion-icon name="search" item-start></ion-icon>
-      <ion-input type="search" placeholder="Buscar" clearInput="true"></ion-input>
+        <button ion-button item-end (click)="Add(key)"><ion-icon name="search"></ion-icon></button>
+      <!--<ion-icon name="search" item-end></ion-icon>-->
+      <ion-input type="search" placeholder="Buscar" clearInput="true" [(ngModel)]="key"></ion-input>
     </ion-item>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  <ion-label>{{ city2 }}</ion-label>
-  <!--<h2>Welcome to Ionic!</h2>
-  <p>
-    This starter project comes with simple tabs-based layout for apps
-    that are going to primarily use a Tabbed UI.
-  </p>
-  <p>
-    Take a look at the <code>src/pages/</code> directory to add or change tabs,
-    update any existing page or create new pages.
-  </p>-->
+  <ion-grid>
+    <ion-row>
+      <ion-col col-12 *ngIf = "images.length == 0 && reload == true">
+          <div class="loader"></div>
+      </ion-col>
+      <ion-col col-12 *ngIf = "images.length == 0 && reload == false">
+        <p>No hay ningún libro disponible con ese nombre.</p>
+      </ion-col>
+      <ion-col col-4 *ngFor="let image of images; let id = index">
+        <img [src]=image.img (click)="selectPhotos(image)"/>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

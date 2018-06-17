@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
@@ -10,11 +10,12 @@ declare var google: any;
   selector: 'page-sign-up',
   templateUrl: 'sign-up.html'
 })
-export class SignUpPage {
+export class SignUpPage implements OnInit{
   picSelected: boolean;
   profilePic: any;
   path: any;
   user = {};
+  location: any;
 
   constructor(
     public navCtrl: NavController,
@@ -23,19 +24,17 @@ export class SignUpPage {
     private geolocation: Geolocation) {
     this.picSelected = false;
   }
+  
+  async ngOnInit(){
+    this.location = await this.get_location_mobile();
+  }
 
   async logForm() {
-    let location = await this.get_location();
-    this.presentAlert('','Create Account..' + JSON.stringify(this.user));
-
     if (this.user['pass1'] === this.user['pass2']) {
       let firstName: string = this.user['firstname'];
       let surname: string = this.user['surname'];
       let email: string = this.user['email'];
       let password: string = this.user['pass1'];
-      let lat = location['lat'];
-      let lon = location['lon'];
-      let city = location['city'];
 
       localStorage.setItem('email', email);
       localStorage.setItem('password', password);
@@ -53,10 +52,7 @@ export class SignUpPage {
                 'email': email,
                 'created': firebase.database.ServerValue.TIMESTAMP,
                 'firstname': firstName,
-                'surname': surname,
-                'city': city,
-                'lat': lat,
-                'lon': lon
+                'surname': surname
               });
 
               if (this.picSelected) {
@@ -65,6 +61,11 @@ export class SignUpPage {
                 firebase.database().ref('/users/' + user.uid).child('profilePic').set(picture_url);
               }
 
+              try{
+                firebase.database().ref('/users/' + user.uid).child('city').set(this.location['city']);
+                firebase.database().ref('/users/' + user.uid).child('lat').set(this.location['lat']);
+                firebase.database().ref('/users/' + user.uid).child('lon').set(this.location['lon']);
+              }catch(error){}
 
               //this.navCtrl.push(TabsPage);
             } else {
@@ -126,10 +127,69 @@ export class SignUpPage {
     }
   }
 
+  get_location_mobile(){
+    return new Promise<any>(resolve => {
+      let location = {};
+      let lat;
+      let lon;
+      let city = null;
+      this.geolocation.getCurrentPosition().then((resp)=> {
+        lat = resp.coords.latitude;
+        lon = resp.coords.longitude;
+
+        let latlng = new google.maps.LatLng(lat, lon);
+
+        new google.maps.Geocoder().geocode({ 'latLng': latlng }, function (results, status) {
+          if (status == google.maps.GeocoderStatus.OK) {
+            if (results[1]) {
+              var country = null, countryCode = null, cityAlt = null;
+              var c, lc, component;
+              for (var r = 0, rl = results.length; r < rl; r += 1) {
+                var result = results[r];
+
+                if (!city && result.types[0] === 'locality') {
+                  for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                    component = result.address_components[c];
+
+                    if (component.types[0] === 'locality') {
+                      city = component.long_name;
+                      break;
+                    }
+                  }
+                }
+                else if (!city && !cityAlt && result.types[0] === 'administrative_area_level_1') {
+                  for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                    component = result.address_components[c];
+
+                    if (component.types[0] === 'administrative_area_level_1') {
+                      cityAlt = component.long_name;
+                      break;
+                    }
+                  }
+                } else if (!country && result.types[0] === 'country') {
+                  country = result.address_components[0].long_name;
+                  countryCode = result.address_components[0].short_name;
+                }
+
+                if (city && country) {
+                  break;
+                }
+              }
+
+              location['lat'] = lat;
+              location['lon'] = lon;
+              location['city'] = city;
+              resolve(location);
+            }
+          }
+        });
+      }).catch((error) => {
+      });
+    });
+  }
+
   get_location() {
     return new Promise<any>(resolve => {
-
-
       let location = {};
       let lat;
       let lon;

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
@@ -8,13 +8,15 @@ import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { convertUrlToDehydratedSegments } from 'ionic-angular/navigation/url-serializer';
+import { Geolocation } from '@ionic-native/geolocation';
 
+declare var google: any;
 
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html'
 })
-export class AboutPage {
+export class AboutPage implements OnInit{
   book = {};
   photos: any;
   photosURLS: any;
@@ -24,6 +26,7 @@ export class AboutPage {
   author: string;
   editorial: string;
   comment: string;
+  location: any;
 
   // tabBarElement: any; //tab variable que desapareceré
 
@@ -35,10 +38,15 @@ export class AboutPage {
     public crop: Crop,
     public afAuth: AngularFireAuth,
     private toastCtrl: ToastController,
-    public afStrg: AngularFireStorage) {
+    public afStrg: AngularFireStorage,
+    private geolocation: Geolocation) {
     // this.tabBarElement = document.querySelector('.tabbar.show-tabbar'); //cojo el tab del html
     this.photos = [];
     this.photosURLS = [];
+  }
+
+  async ngOnInit(){
+    this.location = await this.get_location();
   }
 
   // ionViewWillEnter() {//tab invisible
@@ -47,7 +55,7 @@ export class AboutPage {
 
 
   // Saves book data in firebase database
-  uploadBook() {
+  async uploadBook() {
     this.title = this.book['title'];
     this.author = this.book['author'];
     this.editorial = this.book['editorial'];
@@ -147,6 +155,12 @@ export class AboutPage {
       // Saves pics urls on exampler
       firebase.database().ref('examplers/' + examplerKey).child('downloadURL').set(picture_url.toString());
 
+      try{
+        firebase.database().ref('examplers/' + examplerKey).child('lat').set(this.location['lat']);
+        firebase.database().ref('examplers/' + examplerKey).child('lon').set(this.location['lon']);
+        firebase.database().ref('examplers/' + examplerKey).child('city').set(this.location['city']);
+      }catch (error){
+      }
     }
     catch (error) {
       this.errorAlert('AL SUBIR FOTO ' + JSON.stringify(error));
@@ -187,7 +201,6 @@ export class AboutPage {
           role: 'cancel',
           handler: () => {
             console.log('Cancelar clicado');
-            this.icons.splice(0, 1);
           }
         },
         {
@@ -269,6 +282,7 @@ export class AboutPage {
         // imageData is either a base64 encoded string or a file URI
         // If it's base64:
         this.path = image;
+        this.icons.splice(0, 1);
 
         this.EditAlert();
         this.photos.push(this.path);
@@ -313,6 +327,7 @@ export class AboutPage {
       this.photos.push(this.path);
 
       var reader = new FileReader();
+      this.icons.splice(0, 1);
       reader.onload = e => {
         this.photosURLS.push(reader.result);
       };
@@ -329,9 +344,7 @@ export class AboutPage {
 
     this.crop.crop(this.path, option).then(newImgeUrl => {
       this.path = newImgeUrl;
-      this.icons.splice(0, 1);
     }, err => {
-      this.icons.splice(0, 1);
     });
   }
 
@@ -413,6 +426,71 @@ export class AboutPage {
     });
 
     toast.present();
+  }
+
+  get_location() {
+    return new Promise<any>(resolve => {
+
+
+      let location = {};
+      let lat;
+      let lon;
+      let city = null;
+      //Code Location, Lat, Lon, City, Country
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(position => {
+          lat = position.coords.latitude;
+          lon = position.coords.longitude;
+
+          let latlng = new google.maps.LatLng(lat, lon);
+
+          new google.maps.Geocoder().geocode({ 'latLng': latlng }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+              if (results[1]) {
+                var country = null, countryCode = null, cityAlt = null;
+                var c, lc, component;
+                for (var r = 0, rl = results.length; r < rl; r += 1) {
+                  var result = results[r];
+
+                  if (!city && result.types[0] === 'locality') {
+                    for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                      component = result.address_components[c];
+
+                      if (component.types[0] === 'locality') {
+                        city = component.long_name;
+                        break;
+                      }
+                    }
+                  }
+                  else if (!city && !cityAlt && result.types[0] === 'administrative_area_level_1') {
+                    for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
+                      component = result.address_components[c];
+
+                      if (component.types[0] === 'administrative_area_level_1') {
+                        cityAlt = component.long_name;
+                        break;
+                      }
+                    }
+                  } else if (!country && result.types[0] === 'country') {
+                    country = result.address_components[0].long_name;
+                    countryCode = result.address_components[0].short_name;
+                  }
+
+                  if (city && country) {
+                    break;
+                  }
+                }
+
+                location['lat'] = lat;
+                location['lon'] = lon;
+                location['city'] = city;
+                resolve(location);
+              }
+            }
+          });
+        });
+      }
+    });
   }
 }
 

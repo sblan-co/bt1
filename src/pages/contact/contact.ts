@@ -106,6 +106,7 @@ export class ContactPage {
 
                     book['img'] = imgKeys[0];
                     book['id'] = k;
+                    console.log(book);
                     
                     this.user['publications'].push(book);
                   }
