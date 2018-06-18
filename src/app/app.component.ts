@@ -25,6 +25,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+      localStorage.removeItem('selectedPublication');
 
       this.afAuth.authState.subscribe(
         auth => {

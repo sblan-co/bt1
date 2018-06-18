@@ -23,6 +23,7 @@ export class ContactPage {
   external: boolean;
   books: string;
   user: any;
+  pub: any;
   publications: string[] = ["https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg"];
   
   constructor(
@@ -44,9 +45,9 @@ export class ContactPage {
           else {
             console.log(this.external);
             this.external = true;
-            let pub = JSON.parse(localStorage.getItem('selectedPublication'));
-            console.log(pub);
-            this.user['uid'] = await pub.owner_id;
+            this.pub = JSON.parse(localStorage.getItem('selectedPublication'));
+            console.log('PUB ' + JSON.stringify(this.pub));
+            this.user['uid'] = await this.pub.owner_id;
           }
 
           await this.getUserData();
@@ -55,8 +56,17 @@ export class ContactPage {
       );
   }
 
+  isOwner() {
+    // Comprobar si la id del ejemplar esta dentro de los libros del usuario logeado
+    return firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/books').once('value').then(
+      snap => {
+        return snap.hasChild(this.pub.id);
+      }
+    );
+  }
+
   async getUserData(){
-    console.log(this.user['id']);
+    console.log(this.user['uid']);
     await firebase.database().ref('users/' + this.user['uid']).once('value').then(
       async snapshot => {
         console.log(JSON.stringify(snapshot));
@@ -129,11 +139,12 @@ export class ContactPage {
   }
   
   checkValue(str: any): boolean {
+    console.log('inside check' + str);
     return ((str !== '') && (str != null) && (str !== 'null') && (str !== 'undefined'));
   }
   
   EditProfile() {
-    this.navCtrl.setRoot(ProfilePage);
+    this.navCtrl.push(ProfilePage);
   }
 
   showMoreOptions($event)
@@ -152,7 +163,8 @@ export class ContactPage {
   }
 
   selectPhotos(pub) {
-    console.log(JSON.stringify(pub));
+    pub['owner_id'] = this.user['uid'];
+    console.log('OWNER ID' + pub.owner_id);
     localStorage.setItem('selectedPublication', JSON.stringify(pub));
     this.navCtrl.push(PublicationPage);
   }

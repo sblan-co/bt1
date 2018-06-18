@@ -6,7 +6,6 @@ import * as firebase from 'firebase/app';
 
 // Project
 import { ContactPage } from '../contact/contact';
-import { HomePage } from '../home/home';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
@@ -43,7 +42,8 @@ export class PublicationPage {
   takeMeBack() {//volver a atras boton
     console.log(JSON.stringify(localStorage));
     localStorage.removeItem('selectedPublication');    
-    this.navCtrl.pop();
+    this.navCtrl.popToRoot();
+    this.tabBarElement.style.display = 'flex';
     // if (this.owner) {
     //   this.navCtrl.push(ContactPage);
     // }
@@ -86,7 +86,7 @@ export class PublicationPage {
   }
 
   ionViewWillLeave() {//tab visible al abandonar
-    this.tabBarElement.style.display = 'flex';
+    // this.tabBarElement.style.display = 'flex';
   }
 
   ionViewDidLoad() {

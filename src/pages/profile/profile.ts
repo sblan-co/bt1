@@ -132,7 +132,7 @@ export class ProfilePage {
   }
   
   takeMeBack() {//volver a atras boton
-    this.navCtrl.setRoot(ContactPage);
+    this.navCtrl.pop();
   }
 
   changeListener($event): void {

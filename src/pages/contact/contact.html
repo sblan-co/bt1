@@ -48,7 +48,7 @@
   </div>
   <div item-content class="row">
     <ion-segment [(ngModel)]="books" color="booktrap">
-      <ion-segment-button selected value="Publications">
+      <ion-segment-button outline selected value="Publications">
         Publicados
       </ion-segment-button>
       <!--<ion-segment-button value="Favoritos">
@@ -68,10 +68,8 @@
         <ion-col col-4 no-padding *ngFor="let publication of user.publications">
           <ion-card no-padding (click)="selectPhotos(publication)">
             <img class="imagen" [src]='publication.img'>
-            <ion-card-content>
-              <ion-card-title>
+            <ion-card-content style='padding-left: 5%' no-padding>
                 {{ publication.title }}
-              </ion-card-title>
             </ion-card-content>
           </ion-card>
         </ion-col>
