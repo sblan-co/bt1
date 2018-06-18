@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app';
 import * as math from 'mathjs';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { PublicationPage } from '../publication/publication';
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'page-home',
@@ -121,4 +122,12 @@ export class HomePage {
     this.navCtrl.push(PublicationPage);
   }
   
+
+  doRefresh(refresher) {
+    setTimeout(() => {
+      if (refresher != 0)
+        refresher.complete();
+      this.navCtrl.setRoot(TabsPage);
+    }, 500);
+  };
 }

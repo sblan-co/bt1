@@ -3,16 +3,22 @@
     <ion-item color='booktrap'>
         <button ion-button icon-only clear color='light' item-end (click)="Add(key)"><ion-icon name="search"></ion-icon></button>
       <!--<ion-icon name="search" item-end></ion-icon>-->
-      <ion-input type="search" placeholder="Buscar" clearInput="true" [(ngModel)]="key"></ion-input>
+      <ion-input type="search" placeholder="Buscar" (search)="Add(key)" clearInput="true" [(ngModel)]="key"></ion-input>
     </ion-item>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
+
+    <ion-refresher (ionRefresh)="doRefresh($event);">
+        <ion-refresher-content></ion-refresher-content>
+      </ion-refresher>
+
+
   <ion-grid>
     <ion-row>
       <ion-col col-12 *ngIf = "images.length == 0 && reload == true">
-          <div class="loader"></div>
+          <!-- <div class="loader"></div> -->
       </ion-col>
       <ion-col col-12 *ngIf = "images.length == 0 && reload == false">
         <p>No hay ningún libro disponible con ese nombre.</p>
