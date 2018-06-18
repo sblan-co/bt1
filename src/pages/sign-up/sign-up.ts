@@ -80,7 +80,6 @@ export class SignUpPage implements OnInit{
         console.log('ERROR: ' + JSON.stringify(error));
         var sub;
         if (error.errorCode === "auth/invalid-email") {
-          sub = "Incorrect email address! Please try again!";
           sub = "Email incorrecto, intenta de nuevo.";
         }
         else if (error.errorCode == "auth/email-already-in-use") {
@@ -90,7 +89,7 @@ export class SignUpPage implements OnInit{
           sub = "La contraseña debe contener al menos 6 caracteres.";
         }
         else {
-
+          sub = "¡Ups! Lo sentimos, ha ocurrido algún error, prueba de nuevo.";
         }
 
         let alert = this.alertCtrl.create({

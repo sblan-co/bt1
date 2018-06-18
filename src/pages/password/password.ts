@@ -72,25 +72,38 @@ export class PasswordPage {
       // let password_new2: string = this.user['password_new2'];
 
       var user = firebase.auth().currentUser;
-      try {
-        this.afAuth.auth.signInWithEmailAndPassword(user.email, password_current).then(
-          res => {
-            user.updatePassword(password_new).then(
-              async() => {
+      this.afAuth.auth.signInWithEmailAndPassword(user.email, password_current).then(
+        res => {
+          user.updatePassword(password_new).then(
+            async () => {
               this.infoAlert("Se ha cambiado la contraseña.");
             }).catch((error) => {
               console.log(error);
               this.errorAlert("Error, La contraseña actual no coincide.")
             });
+        }
+      ).catch(
+        error => {
+          if (error.errorCode === "auth/invalid-email") {
+            this.errorAlert("Email incorrecto, intenta de nuevo.");
           }
-        ).catch(error => {
+          else if (error.errorCode == "auth/user-disabled") {
+            this.errorAlert("Usuario deshabilitado.");
+          }
+          else if (error.errorCode == "auth/user-not-found") {
+            this.errorAlert("Usuario no encontrado.");
+          }
+          else if (error.errorCode == "auth/wrong-password") {
+            this.errorAlert("Contraseña errónea.");
+          }
+          else {
+            this.errorAlert("¡Ups! Lo sentimos, ha ocurrido algún error, prueba de nuevo.");
+          }
           this.errorAlert('Error, la contraseña actual no coincide.')
         });
-      } catch (error) {
-        this.errorAlert("Error, La contraseña actual no es correcta.")
-      }
+
     } else {
-      this.errorAlert("Las contraseñas no coinciden.")
+      this.errorAlert("La nueva contraseña no coincide.")
     }
   }
 
