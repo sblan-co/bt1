@@ -39,9 +39,10 @@ export class ExchangesPage {
     }
 
     async getUserData() {
-        console.log(this.exchange_id);
+        console.log('ID INTERCAMBIO' + this.exchange_id);
         await firebase.database().ref('exchanges/' + this.exchange_id).once('value').then(
             async snap => {
+                console.log(JSON.stringify(snap));
                 this.requester['id'] = await snap.val().requester.id;
 
                 firebase.database().ref('users/' + this.requester['id']).once('value').then(
@@ -81,7 +82,7 @@ export class ExchangesPage {
     }
 
     takeMeBack() {//volver a atras boton
-        this.navCtrl.setRoot(ContactPage);
+        this.navCtrl.pop();
     }
 
     showDeleteAlert() {

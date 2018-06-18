@@ -25,11 +25,13 @@ import { PasswordPage } from '../password/password';
     signOut(){
       this.afAuth.auth.signOut();
       localStorage.clear();
-      this.navCtrl.setRoot(LoginPage);
+      this.navCtrl.push(LoginPage);
     }
 
     changePassword(){
-      this.viewCtrl.dismiss();
-      this.navCtrl.setRoot(PasswordPage);
+      this.viewCtrl.dismiss().then(() => {
+        this.navCtrl.push(PasswordPage);
+      });
+      // this.viewCtrl.dismiss();
     }
   }

@@ -41,12 +41,15 @@ export class PublicationPage {
   }
 
   takeMeBack() {//volver a atras boton
-    if (this.owner) {
-      this.navCtrl.push(ContactPage);
-    }
-    else {
-      this.navCtrl.setRoot(HomePage);
-    }
+    console.log(JSON.stringify(localStorage));
+    localStorage.removeItem('selectedPublication');    
+    this.navCtrl.pop();
+    // if (this.owner) {
+    //   this.navCtrl.push(ContactPage);
+    // }
+    // else {
+    //   this.navCtrl.setRoot(HomePage);
+    // }
   }
 
   isOwner() {
@@ -88,6 +91,10 @@ export class PublicationPage {
 
   ionViewDidLoad() {
     this.tabBarElement.style.display = 'none';
+  }
+
+  goToProfile(){
+    this.navCtrl.push(ContactPage);
   }
 
   deletePublication() {

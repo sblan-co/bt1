@@ -37,25 +37,29 @@ export class ContactPage {
       platform.ready().then(
         async () => {
           
-          if (this.checkValue(localStorage.getItem('selectedPublication'))) {
+          if (!this.checkValue(localStorage.getItem('selectedPublication'))) {
             this.external = false;
             this.user['uid'] = await this.afAuth.auth.currentUser.uid;
           }
           else {
+            console.log(this.external);
             this.external = true;
-            let pub = localStorage.getItem('selectedPublication');
-            this.user['uid'] = await pub['uid'];
+            let pub = JSON.parse(localStorage.getItem('selectedPublication'));
+            console.log(pub);
+            this.user['uid'] = await pub.owner_id;
           }
 
-          this.getUserData();
+          await this.getUserData();
           this.books = "Publications";
         }
       );
   }
 
   async getUserData(){
-    await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid).once('value').then(
+    console.log(this.user['id']);
+    await firebase.database().ref('users/' + this.user['uid']).once('value').then(
       async snapshot => {
+        console.log(JSON.stringify(snapshot));
         this.user['firstname'] = snapshot.val().firstname;
         this.user['lat'] = snapshot.val().lat;
         this.user['lon'] = snapshot.val().lon;
@@ -64,7 +68,7 @@ export class ContactPage {
         this.user['phone'] = snapshot.val().phone;
         
         if (snapshot.hasChild('exchanges')){
-          await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/exchanges').once('value').then(
+          await firebase.database().ref('users/' + this.user['uid'] + '/exchanges').once('value').then(
             snapExchanges => {
               this.user['nExchanges'] = Object.keys(snapExchanges.val()).length;
             }
@@ -77,7 +81,7 @@ export class ContactPage {
         this.user['publications'] = [];
         
         if (snapshot.hasChild('books')){
-          await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/books').once('value').then(
+          await firebase.database().ref('users/' + this.user['uid'] + '/books').once('value').then(
             async snapBooks => {
 
               // Sacamos las keys de los ejemplares publicados por el usuario
@@ -153,4 +157,7 @@ export class ContactPage {
     this.navCtrl.push(PublicationPage);
   }
 
+  takeMeBack(){
+    this.navCtrl.pop();
+  }
 }

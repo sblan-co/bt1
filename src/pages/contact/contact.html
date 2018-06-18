@@ -3,11 +3,19 @@
     <ion-title>
       {{ user.firstname }}
     </ion-title>
+
     <ion-buttons left [hidden]='external'>
       <button ion-button color="light" icon-only clear (click)="showExchanges($event)">
         <ion-icon name="mail"></ion-icon>
       </button>
     </ion-buttons>
+
+    <ion-buttons left [hidden]='!external'>
+      <button ion-button color="light" icon-only clear (click)="takeMeBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
     <ion-buttons right [hidden]='external'>
       <button ion-button  color="light" icon-only clear (click)="showMoreOptions($event)">
         <ion-icon name="more"></ion-icon>
@@ -30,9 +38,9 @@
       <ion-label>
         <ion-icon name="pin"></ion-icon>&nbsp;{{ user.city }}
       </ion-label>
-      <ion-label>
+      <!-- <ion-label>
         <ion-icon name="call"></ion-icon>&nbsp;{{ user.phone }}
-      </ion-label>
+      </ion-label> -->
     </div>
   </div>
   <div item-content class="row">

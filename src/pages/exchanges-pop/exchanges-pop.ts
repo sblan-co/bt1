@@ -53,6 +53,5 @@ export class ExchangesPopPage {
   showExchange(item) {
     localStorage.setItem('exchangeId', item);
     this.navCtrl.push(ExchangesPage);
-    console.log("Exchanges");
   }
 }
