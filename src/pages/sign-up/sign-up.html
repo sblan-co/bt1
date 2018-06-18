@@ -44,6 +44,14 @@
         <ion-input name="surname" placeholder="Apellidos" text-input-placeholder-color="light" [(ngModel)]="user.surname"></ion-input>
       </ion-item>
 
+      <!--  TELEFONO  -->
+      <ion-item class="fondo">
+        <ion-label color="primary">
+            <ion-icon name="call" item-start color="light"></ion-icon>
+          </ion-label>
+        <ion-input name="phone" placeholder="Teléfono" text-input-placeholder-color="light" [(ngModel)]="user.phone"></ion-input>
+      </ion-item>
+
       <!-- EMAIL -->
       <ion-item class="fondo">
 
@@ -78,7 +86,7 @@
       <p></p>
 
       <ion-row class="fondo">
-        <button [disabled]="!user.firstname || !user.surname || !user.email || !user.pass1 || !user.pass2" ion-button block color="light"
+        <button [disabled]="!user.firstname || !user.surname || !user.phone || !user.email || !user.pass1 || !user.pass2" ion-button block color="light"
           type="submit" class="logIn-button">Confirmar</button>
       </ion-row>
     </form>

@@ -4,25 +4,32 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 // Ionic-Angular
 import { NavController } from 'ionic-angular';
+import { ViewController } from 'ionic-angular';
 
 // Project
 import { LoginPage } from '../login/login';
+import { PasswordPage } from '../password/password';
 
 @Component({
   selector: 'page-more-options',
     template: `
       <ion-list>
         <button ion-item (click)="signOut()">Cerrar Sesión</button>
+        <button ion-item (click)="changePassword()">Cambiar Contraseña</button>
       </ion-list>
     `
   })
   export class MoreOptionsPage {
-    constructor(public navCtrl: NavController, private afAuth: AngularFireAuth) {}
+    constructor(public viewCtrl: ViewController, public navCtrl: NavController, private afAuth: AngularFireAuth) {}
   
-    signOut()
-    {
-      console.log("Cierra sesión");
+    signOut(){
       this.afAuth.auth.signOut();
-      this.navCtrl.push(LoginPage);
+      localStorage.clear();
+      this.navCtrl.setRoot(LoginPage);
+    }
+
+    changePassword(){
+      this.viewCtrl.dismiss();
+      this.navCtrl.setRoot(PasswordPage);
     }
   }

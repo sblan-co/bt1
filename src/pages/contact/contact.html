@@ -3,12 +3,12 @@
     <ion-title>
       {{ user.firstname }}
     </ion-title>
-    <ion-buttons left>
+    <ion-buttons left [hidden]='external'>
       <button ion-button color="light" icon-only clear (click)="showExchanges($event)">
         <ion-icon name="mail"></ion-icon>
       </button>
     </ion-buttons>
-    <ion-buttons right>
+    <ion-buttons right [hidden]='external'>
       <button ion-button  color="light" icon-only clear (click)="showMoreOptions($event)">
         <ion-icon name="more"></ion-icon>
       </button>
@@ -20,7 +20,8 @@
   <div item-content class="row">
     <div item-content id="avatar-image">
       <ion-avatar color="booktrap">
-        <img src="{{ user.profilePic }}" (error)="imgError($event)" imageViewer>
+        <img *ngIf = "user.profilePic" src="{{ user.profilePic }}" (error)="imgError($event)" imageViewer>
+        <ion-icon name="contact" *ngIf ="!user.profilePic" ></ion-icon>
       </ion-avatar>
     </div>
     <div item-content id="info">
@@ -29,22 +30,25 @@
       <ion-label>
         <ion-icon name="pin"></ion-icon>&nbsp;{{ user.city }}
       </ion-label>
+      <ion-label>
+        <ion-icon name="call"></ion-icon>&nbsp;{{ user.phone }}
+      </ion-label>
     </div>
   </div>
   <div item-content class="row">
     <button ion-button full [hidden]='external' color="booktrap" (click)="EditProfile()">Editar Perfil</button>
   </div>
   <div item-content class="row">
-    <ion-segment [(ngModel)]="libros" color="booktrap">
-      <ion-segment-button selected value="Publicaciones">
+    <ion-segment [(ngModel)]="books" color="booktrap">
+      <ion-segment-button selected value="Publications">
         Publicados
       </ion-segment-button>
-      <ion-segment-button value="Favoritos">
+      <!--<ion-segment-button value="Favoritos">
         Favoritos
       </ion-segment-button>
       <ion-segment-button value="Opiniones">
         Opiniones
-      </ion-segment-button>
+      </ion-segment-button>-->
       <!--<ion-segment-button value="Seguidos">
         Seguidos
       </ion-segment-button>-->

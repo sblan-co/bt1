@@ -34,6 +34,7 @@ export class SignUpPage implements OnInit{
       let firstName: string = this.user['firstname'];
       let surname: string = this.user['surname'];
       let email: string = this.user['email'];
+      let phone: string = this.user['phone'];
       let password: string = this.user['pass1'];
 
       localStorage.setItem('email', email);
@@ -52,7 +53,8 @@ export class SignUpPage implements OnInit{
                 'email': email,
                 'created': firebase.database.ServerValue.TIMESTAMP,
                 'firstname': firstName,
-                'surname': surname
+                'surname': surname,
+                'phone':phone
               });
 
               if (this.picSelected) {

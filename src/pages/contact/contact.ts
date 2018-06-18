@@ -37,7 +37,7 @@ export class ContactPage {
       platform.ready().then(
         async () => {
           
-          if (!this.checkValue(localStorage.getItem('selectedPublication'))) {
+          if (this.checkValue(localStorage.getItem('selectedPublication'))) {
             this.external = false;
             this.user['uid'] = await this.afAuth.auth.currentUser.uid;
           }
@@ -61,6 +61,7 @@ export class ContactPage {
         this.user['lon'] = snapshot.val().lon;
         this.user['city'] = snapshot.val().city;
         this.user['profilePic'] = snapshot.val().profilePic;
+        this.user['phone'] = snapshot.val().phone;
         
         if (snapshot.hasChild('exchanges')){
           await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/exchanges').once('value').then(

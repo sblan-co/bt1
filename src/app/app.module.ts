@@ -13,6 +13,7 @@ import { Camera } from '@ionic-native/camera';
 import { ImagePicker } from '@ionic-native/image-picker';
 import { Crop } from '@ionic-native/crop';
 import { Geolocation } from '@ionic-native/geolocation';
+import { IonicImageViewerModule } from 'ionic-img-viewer';
 import { NativeGeocoder, NativeGeocoderReverseResult, NativeGeocoderForwardResult } from '@ionic-native/native-geocoder'
 
 // Firebase
@@ -34,6 +35,7 @@ import { MoreOptionsPage } from '../pages/more-options/more-options';
 import { PublicationPage } from '../pages/publication/publication';
 import { ExchangesPopPage } from '../pages/exchanges-pop/exchanges-pop';
 import { ExchangesPage } from '../pages/exchanges/exchanges';
+import { PasswordPage } from '../pages/password/password';
 
 export const firebaseConfig = {
   apiKey: "AIzaSyBb5MZHaxOYE35iIbVwYVZL2idWh5lMLdM",
@@ -58,13 +60,15 @@ export const firebaseConfig = {
     MoreOptionsPage,
     PublicationPage,
     ExchangesPopPage,
-    ExchangesPage
+    ExchangesPage,
+    PasswordPage
   ],
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule,
+    IonicImageViewerModule,
     AngularFireStorageModule
   ],
   bootstrap: [IonicApp],
@@ -80,7 +84,8 @@ export const firebaseConfig = {
     MoreOptionsPage,
     PublicationPage,
     ExchangesPopPage,
-    ExchangesPage
+    ExchangesPage,
+    PasswordPage
   ],
   providers: [
     Facebook,
