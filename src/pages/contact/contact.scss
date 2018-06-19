@@ -9,6 +9,20 @@ page-contact {
         text-align: center;
     }
 }
+.card-content{
+    color: white;
+    padding-left: 5% !important;
+    padding-top: 5% !important;
+}
+.card{
+    background-color: #75cbff;
+    border: solid;
+    border-color: #75cbff;
+    border-radius: 5px;
+}
+.imagen{
+    border-radius: 5px;
+}
 ion-avatar > img{
     border: solid;
     border-color: #75cbff;

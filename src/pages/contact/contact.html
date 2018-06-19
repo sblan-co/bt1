@@ -35,12 +35,12 @@
     <div item-content id="info">
       <!-- <ion-label>10 Préstamos</ion-label> -->
       <ion-label>{{ user.nExchanges }} Intercambios</ion-label>
-      <ion-label>
-        <ion-icon name="pin"></ion-icon>&nbsp;{{ user.city }}
+      <ion-label *ngIf="user.city">
+        <ion-icon name="pin" color="booktrap"></ion-icon>&nbsp;{{ user.city }}
       </ion-label>
-      <!-- <ion-label>
-        <ion-icon name="call"></ion-icon>&nbsp;{{ user.phone }}
-      </ion-label> -->
+      <ion-label>
+        <ion-icon name="call" color="booktrap"></ion-icon>&nbsp;{{ user.phone }}
+      </ion-label> 
     </div>
   </div>
   <div item-content class="row">
@@ -68,8 +68,8 @@
         <ion-col col-4 no-padding *ngFor="let publication of user.publications">
           <ion-card no-padding (click)="selectPhotos(publication)">
             <img class="imagen" [src]='publication.img'>
-            <ion-card-content style='padding-left: 5%' no-padding>
-                {{ publication.title }}
+            <ion-card-content no-padding>
+                {{ publication.title | slice:0:11 }}
             </ion-card-content>
           </ion-card>
         </ion-col>

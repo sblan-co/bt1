@@ -3,11 +3,11 @@
         <ion-title>
             Publicación
         </ion-title>
-        <ion-buttons right>
+        <!--<ion-buttons right>
             <button ion-button clear>
                 <ion-icon name='star-outline'></ion-icon>
             </button>
-        </ion-buttons>
+        </ion-buttons>-->
         <ion-buttons left>
             <button ion-button clear (click)='takeMeBack()'>
                 <ion-icon name='arrow-back'></ion-icon>
@@ -19,18 +19,13 @@
 <ion-content no-padding>
 
     <!-- IMAGEN -->
-    <ion-item class='imagenes'>
-        <ion-slides pager>
-            <ion-slide *ngFor='let pic of exampler.pics'>
-                <ion-row>
-                    <ion-col>
-                        <!--*ngFor='let img of book.images'-->
-                        <img class='foto' src='{{pic}}'/>
-                    </ion-col>
-                </ion-row>
-            </ion-slide>
-        </ion-slides>
-    </ion-item>
+    <!--<ion-item class='imagenes'>-->
+    <ion-slides pager class="border-image">
+        <ion-slide *ngFor='let pic of exampler.pics'>
+                        <img class='image' src='{{pic}}' imageViewer/>
+                    <!--*ngFor='let img of book.images'-->
+        </ion-slide>
+    </ion-slides>
 
     <ion-item color='booktrap' (click)='goToProfile()'>
         <ion-row no-padding>
@@ -47,12 +42,12 @@
     </ion-item>
 
     <p style='padding-left: 5%'>
-        <b>{{ exampler.title }}</b>
+        <b class="booktrap">{{ exampler.title }}</b>
         <br>
         <br>
-        <b>Autor:</b> {{ exampler.author }} <br>
-        <b>Editorial:</b> {{ exampler.editorial }}</p>
-    <p>&nbsp; {{ exampler.comment }}</p>
+        Autor: <b>{{ exampler.author }}</b>
+        <br> Editorial: <b>{{ exampler.editorial }}</b><br>
+        <br>{{ exampler.comment }}</p>
 </ion-content>
 
 <ion-footer>

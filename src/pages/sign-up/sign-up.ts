@@ -26,7 +26,10 @@ export class SignUpPage implements OnInit{
   }
   
   async ngOnInit(){
-    this.location = await this.get_location_mobile();
+    try{
+      this.location = await this.get_location_mobile();
+    }catch(error){
+    }
   }
 
   async logForm() {
@@ -58,9 +61,10 @@ export class SignUpPage implements OnInit{
               });
 
               if (this.picSelected) {
-                this.presentAlert('', 'pic selected');
                 var picture_url = await this.AddImagesStorage(user.uid);
                 firebase.database().ref('/users/' + user.uid).child('profilePic').set(picture_url);
+              }else{
+                firebase.database().ref('/users/' + user.uid).child('profilePic').set("https://www.pnliafi.com.ar/wp-content/uploads/2016/01/avatar-user.png");
               }
 
               try{

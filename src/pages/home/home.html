@@ -16,15 +16,21 @@
 
 
   <ion-grid>
-    <ion-row>
+    <ion-row no-padding>
       <ion-col col-12 *ngIf = "images.length == 0 && reload == true">
-          <!-- <div class="loader"></div> -->
+          <div class="loader"></div>
       </ion-col>
       <ion-col col-12 *ngIf = "images.length == 0 && reload == false">
         <p>No hay ningún libro disponible con ese nombre.</p>
       </ion-col>
-      <ion-col col-4 *ngFor="let image of images; let id = index">
-        <img [src]=image.img (click)="selectPhotos(image)"/>
+      <ion-col col-4 no-padding *ngFor="let image of images; let id = index">
+          <ion-card no-padding (click)="selectPhotos(image)">
+              <img class="imagen" [src]='image.img'>
+              <ion-card-content no-padding>
+                  {{ image.title | slice:0:11 }}
+              </ion-card-content>
+            </ion-card>
+        <!--<img [src]=image.img (click)="selectPhotos(image)"/>-->
       </ion-col>
     </ion-row>
   </ion-grid>

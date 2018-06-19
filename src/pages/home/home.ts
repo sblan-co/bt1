@@ -78,16 +78,21 @@ export class HomePage {
         try{
          var imgURL = snapshot.val().downloadURL.split(',');
          const urlExamplers = imgURL[0];
+         var title; 
+         var author;
+         var id = snapshot.key;
+         var owner_id = snapshot.val().owner_id;
          var distance = this.distance(this.lat_user, this.lon_user, snapshot.val().lat, snapshot.val().lon);
          if(!distance){
           distance = 99999999;
         }
-        let orderDistances = { "img": urlExamplers, "distance": distance};
         await firebase.database().ref('books/' + snapshot.val().book_id).once('value').then(
           async snapBook => {
-            const tittle = snapBook.val().title;
-            const author = snapBook.val().author;
-            if(tittle.toLowerCase().indexOf(key.toLowerCase()) >= 0){
+            const title = await snapBook.val().title;
+            const author = await snapBook.val().author;
+            let orderDistances = { "img": urlExamplers, "distance": distance, "title": title,
+            "author": author, "id": id, 'owner_id': owner_id};
+            if(title.toLowerCase().indexOf(key.toLowerCase()) >= 0){
               await this.images.push(orderDistances);
             }
             else if(author.toLowerCase().indexOf(key.toLowerCase()) >= 0){

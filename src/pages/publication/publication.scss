@@ -9,13 +9,16 @@ page-publication{
         text-align: center;
     }
 
-    .imagenes{
+    .booktrap{
+        color: #75cbff;
+    }
+
+    .border-image{
         max-height: 40%;
-        align-content: center;
-        text-align: center;
+        max-width: 100%;
     }
     
-    .foto {
+    .image {
         // position: absolute;  
         top: 0;  
         bottom: 0;  
@@ -23,6 +26,8 @@ page-publication{
         right: 0;  
         height: 100%;
         width: 100%;
+        align-content: center;
+        text-align: center;
         margin: 0 auto;
     }
 }
