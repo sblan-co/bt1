@@ -66,7 +66,7 @@ export class PublicationPage {
     await firebase.database().ref('examplers/' + this.exampler.id).once('value').then(
       async snapshot => {
         // console.log(JSON.stringify(snapshot));
-        this.exampler['editorial'] = snapshot.val().editorial;
+        this.exampler['editorial'] = snapshot.val().editorial ? snapshot.val().editorial : 'Desconocida';
         this.exampler['comment'] = snapshot.val().comment;
         this.exampler['pics'] = snapshot.val().downloadURL.split(',');
 
@@ -86,7 +86,7 @@ export class PublicationPage {
   }
 
   ionViewWillLeave() {//tab visible al abandonar
-    // this.tabBarElement.style.display = 'flex';
+    this.tabBarElement.style.display = 'flex';
   }
 
   ionViewDidLoad() {
@@ -115,7 +115,7 @@ export class PublicationPage {
 
     firebase.database().ref('examplers/' + this.exampler['id']).remove();
     firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/books/' + this.exampler['id']).remove();
-    this.navCtrl.push(ContactPage);
+    this.navCtrl.pop();
     this.infoAlert('Publicación eliminada con éxito.');
   }
 

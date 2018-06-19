@@ -14,6 +14,7 @@ import { ProfilePage } from '../profile/profile';
 import { PublicationPage } from '../publication/publication';
 import { MoreOptionsPage } from '../more-options/more-options';
 import { ExchangesPopPage } from '../exchanges-pop/exchanges-pop';
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'page-contact',
@@ -64,7 +65,7 @@ export class ContactPage {
       }
     );
   }
-
+  
   async getUserData(){
     console.log(this.user['uid']);
     await firebase.database().ref('users/' + this.user['uid']).once('value').then(
@@ -137,8 +138,16 @@ export class ContactPage {
     $event.target['src'] = 'https://firebasestorage.googleapis.com/v0/b/booktrap-d814e.appspot.com/o/whiteperson.png?alt=media&token=42d21c7e-6f14-473e-b361-81a901bb172f';
   }
   
+  doRefresh(refresher) {
+    setTimeout(() => {
+      if (refresher != 0)
+        refresher.complete();
+      this.navCtrl.setRoot(ContactPage);
+    }, 500);
+  };
+  
   checkValue(str: any): boolean {
-    console.log('inside check' + str);
+    // console.log('inside check' + str);
     return ((str !== '') && (str != null) && (str !== 'null') && (str !== 'undefined'));
   }
   

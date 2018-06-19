@@ -17,7 +17,7 @@
     </ion-buttons>
 
     <ion-buttons right [hidden]='external'>
-      <button ion-button  color="light" icon-only clear (click)="showMoreOptions($event)">
+      <button ion-button color="light" icon-only clear (click)="showMoreOptions($event)">
         <ion-icon name="more"></ion-icon>
       </button>
     </ion-buttons>
@@ -28,8 +28,8 @@
   <div item-content class="row">
     <div item-content id="avatar-image">
       <ion-avatar color="booktrap">
-        <img *ngIf = "user.profilePic" src="{{ user.profilePic }}" (error)="imgError($event)" imageViewer>
-        <ion-icon name="contact" *ngIf ="!user.profilePic" ></ion-icon>
+        <img *ngIf="user.profilePic" src="{{ user.profilePic }}" (error)="imgError($event)" imageViewer>
+        <ion-icon name="contact" *ngIf="!user.profilePic"></ion-icon>
       </ion-avatar>
     </div>
     <div item-content id="info">
@@ -38,9 +38,6 @@
       <ion-label *ngIf="user.city">
         <ion-icon name="pin" color="booktrap"></ion-icon>&nbsp;{{ user.city }}
       </ion-label>
-      <ion-label>
-        <ion-icon name="call" color="booktrap"></ion-icon>&nbsp;{{ user.phone }}
-      </ion-label> 
     </div>
   </div>
   <div item-content class="row">
@@ -63,13 +60,20 @@
     </ion-segment>
   </div>
   <div [ngSwitch]="books">
+
     <ion-grid *ngSwitchCase="'Publications'" no-padding>
+
       <ion-row no-padding>
+
+        <ion-refresher (ionRefresh)="doRefresh($event);">
+          <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
+
         <ion-col col-4 no-padding *ngFor="let publication of user.publications">
           <ion-card no-padding (click)="selectPhotos(publication)">
             <img class="imagen" [src]='publication.img'>
             <ion-card-content no-padding>
-                {{ publication.title | slice:0:11 }}
+              {{ publication.title | slice:0:11 }}
             </ion-card-content>
           </ion-card>
         </ion-col>

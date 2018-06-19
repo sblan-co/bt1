@@ -58,8 +58,8 @@ export class AboutPage implements OnInit{
   async uploadBook() {
     this.title = this.book['title'];
     this.author = this.book['author'];
-    this.editorial = this.book['editorial'];
-    this.comment = this.book['comment'];
+    this.editorial = this.book['editorial'] ? this.book['editorial'] : '';
+    this.comment = this.book['comment'] ? this.book['comment'] : '';
 
     if (this.photos.length <= 0) {
       this.errorAlert('Debes incluir al menos una foto.');
@@ -141,13 +141,20 @@ export class AboutPage implements OnInit{
     let ref = firebase.database().ref('examplers');
 
     try {
+      console.log('EDITORIAL' + this.editorial);
+
       // Adds exampler to database
-      examplerKey = await ref.push({
-        'book_id': bookId,
-        'comment': this.comment,
-        'editorial': this.editorial,
-        'owner_id': this.afAuth.auth.currentUser.uid
-      }).key;
+      try {
+        examplerKey = await ref.push({
+          'book_id': bookId,
+          'comment': this.comment,
+          'editorial': this.editorial,
+          'owner_id': this.afAuth.auth.currentUser.uid
+        }).key;
+      }
+      catch(error){
+        this.errorAlert('PUSH error:' + error);
+      }
 
       // Uploads pics
       picture_url = await this.AddImagesStorage(examplerKey);
@@ -295,11 +302,11 @@ export class AboutPage implements OnInit{
   }
 
 
-  changeListener($event): void {
+  async changeListener($event) {
     if (this.photos.length == 3) {
       this.MaxPhotosAlert();
     } else {
-      this.path = $event.target.files[0];
+      this.path = await $event.target.files[0];
       this.photos.push(this.path);
 
       var reader = new FileReader();
