@@ -16,16 +16,18 @@ import { ContactPage } from '../contact/contact';
     templateUrl: 'exchanges.html'
 })
 export class ExchangesPage {
+    pub: any;
     requester: any;
     exchange_id: any;
     exampler: any;
+    tabBarElement: any;
 
     constructor(
         platform: Platform,
         public navCtrl: NavController,
         public afAuth: AngularFireAuth,
         public alertCtrl: AlertController) {
-
+        this.pub = {};
         this.requester = [];
         this.exampler = [];
         this.exchange_id = localStorage.getItem('exchangeId');
@@ -39,10 +41,8 @@ export class ExchangesPage {
     }
 
     async getUserData() {
-        console.log('ID INTERCAMBIO' + this.exchange_id);
         await firebase.database().ref('exchanges/' + this.exchange_id).once('value').then(
             async snap => {
-                console.log(JSON.stringify(snap));
                 this.requester['id'] = await snap.val().requester.id;
 
                 firebase.database().ref('users/' + this.requester['id']).once('value').then(
@@ -54,21 +54,22 @@ export class ExchangesPage {
                     }
                 );
 
-                await this.getBookData(snap.val().owner.exampler);
+                await this.getBookData(snap.val().owner.exampler,this.requester['id']);
             }
         );
     }
 
-    async getBookData(id) {
+    async getBookData(id, id_user) {
         await firebase.database().ref('examplers/' + id).once('value').then(
             async snap => {
-                console.log(snap.val().bookId);
                 this.exampler['bookId'] = await snap.val().book_id;
 
                 firebase.database().ref('books/' + this.exampler['bookId']).once('value').then(
                     book => {
                         this.exampler['title'] = book.val().title;
                         this.exampler['author'] = book.val().author;
+                        this.pub = {"id":id, 'owner_id': id_user,"title":  book.val().title,
+             "author": book.val().author};
                     }
                 );
 
@@ -117,6 +118,10 @@ export class ExchangesPage {
         }
     }
 
+    goToProfile(){
+        localStorage.setItem('selectedPublication', JSON.stringify(this.pub));
+        this.navCtrl.push(ContactPage);
+      }
 
     deleteExchange() {
         firebase.database().ref('exchanges/' + this.exchange_id).remove();

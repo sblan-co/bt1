@@ -28,8 +28,6 @@ export class ExchangesPopPage {
         if (snap.hasChild('exchanges')) {
           firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/exchanges').once('value').then(
             async snapEx => {
-              console.log(JSON.stringify(snapEx));
-
               var keys = Object.keys(snapEx.val());
 
               for (var k of keys) {

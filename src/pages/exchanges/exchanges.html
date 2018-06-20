@@ -19,7 +19,7 @@
             </ion-avatar>
         </div>
 
-        <div item-content id="info">
+        <div item-content id="info" (click)='goToProfile()'>
             <ion-label>{{ requester.firstname }}</ion-label>
             <ion-label>
                 <ion-icon name="pin" color="booktrap"></ion-icon>&nbsp;{{ requester.city }}
