@@ -72,7 +72,7 @@ export class HomePage {
 
   async Add(key){
     this.images = [];
-    if(key == ""){
+    if(key == "" || !key){
         this.listExamplers();
     }else{
       await firebase.database().ref('examplers').on('child_added', async snapshot => {

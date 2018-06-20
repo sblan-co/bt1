@@ -85,9 +85,9 @@ export class PublicationPage {
     $event.target['src'] = 'https://firebasestorage.googleapis.com/v0/b/booktrap-d814e.appspot.com/o/person.png?alt=media&token=05c4c25e-1187-4a01-b39a-e40dcfddfa40';
   }
 
-  ionViewWillLeave() {//tab visible al abandonar
+  /*ionViewWillLeave() {//tab visible al abandonar
     this.tabBarElement.style.display = 'flex';
-  }
+  }*/
 
   ionViewDidLoad() {
     this.tabBarElement.style.display = 'none';

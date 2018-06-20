@@ -45,7 +45,10 @@ export class AboutPage implements OnInit{
   }
 
   async ngOnInit(){
-    this.location = await this.get_location();
+    try{
+      this.location = await this.get_location();
+    }catch(error){
+    }
   }
 
   // ionViewWillEnter() {//tab invisible

@@ -1,5 +1,5 @@
 // Angular
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 // Firebase
 import * as firebase from 'firebase/app';
@@ -20,10 +20,11 @@ import { TabsPage } from '../tabs/tabs';
   selector: 'page-contact',
   templateUrl: 'contact.html'
 })
-export class ContactPage {
+export class ContactPage{
   external: boolean;
   books: string;
   user: any;
+  tabBarElement: any;
   pub: any;
   publications: string[] = ["https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg"];
   
@@ -34,6 +35,7 @@ export class ContactPage {
     public afAuth: AngularFireAuth) {
       this.user = {};
       this.external = false;
+      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
 
       platform.ready().then(
         async () => {
