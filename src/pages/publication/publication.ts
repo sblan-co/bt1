@@ -112,8 +112,9 @@ export class PublicationPage {
     firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/books/' + this.exampler['id']).remove();
     this.infoAlert('Publicación eliminada con éxito.');
     localStorage.removeItem('selectedPublication');    
-    this.navCtrl.popToRoot();
-    this.tabBarElement.style.display = 'flex';
+    //this.navCtrl.popToRoot();
+    //this.tabBarElement.style.display = 'flex';
+    location.reload();
   }
 
   addExchange() {

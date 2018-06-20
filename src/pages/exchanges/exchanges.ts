@@ -83,6 +83,7 @@ export class ExchangesPage {
     }
 
     takeMeBack() {//volver a atras boton
+        localStorage.removeItem('selectedPublication');    
         this.navCtrl.popToRoot();
     }
 
@@ -126,7 +127,6 @@ export class ExchangesPage {
     deleteExchange() {
         firebase.database().ref('exchanges/' + this.exchange_id).remove();
         firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/exchanges/' + this.exchange_id).remove();
-        this.navCtrl.pop();
         this.infoAlert('Intercambio eliminado con éxito.');
     }
 
