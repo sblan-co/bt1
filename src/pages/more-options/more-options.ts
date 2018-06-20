@@ -25,6 +25,7 @@ import { PasswordPage } from '../password/password';
     signOut(){
       this.afAuth.auth.signOut();
       localStorage.clear();
+      window.location.reload();
       this.navCtrl.push(LoginPage);
     }
 
