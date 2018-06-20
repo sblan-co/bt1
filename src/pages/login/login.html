@@ -8,12 +8,10 @@
 
     <p></p>
 
-    <!-- <div class="input"> -->
-
     <!-- EMAIL -->
     <ion-item class="fondo">
       <ion-row justify-content-start>
-        <ion-item ion-end class="fondo">
+        <ion-item no-lines ion-end class="fondo">
           <ion-icon name="mail" item-start color="light"></ion-icon>
           <ion-input [(ngModel)]='email' type="email" class="input" placeholder="Email"></ion-input>
         </ion-item>
@@ -23,13 +21,12 @@
     <!-- PASSWORD -->
     <ion-item class="fondo">
       <ion-row justify-content-start>
-        <ion-item ion-end class="fondo">
+        <ion-item no-lines ion-end class="fondo">
           <ion-icon name="lock" item-start color="light"></ion-icon>
           <ion-input [(ngModel)]='password' type="password" placeholder="Contraseña" text-input-placeholder-color="light"></ion-input>
         </ion-item>
       </ion-row>
     </ion-item>
-    <!-- </div> -->
 
     <ion-item class="fondo">
       <ion-row class="fondo">
@@ -37,14 +34,14 @@
       </ion-row>
     </ion-item>
 
-    <ion-row class="fondo">
+    <!--<ion-row class="fondo">
       <button ion-button clear color="light">Olvidé mi contraseña</button>
-    </ion-row>
+    </ion-row>-->
 
     <p align="center" color="secondary"></p>
 
-    <!-- SOCIAL MEDIA LOGIN -->
-    <div class="sn-icons">
+    <!-- SOCIAL MEDIA LOGIN Future Code, now it doesn't work-->
+    <!--<div class="sn-icons">
       <ion-row>
         <ion-col>
           <ion-icon ios="logo-facebook" md="logo-facebook" color="light" (click)='fbLogin()'></ion-icon>
@@ -56,14 +53,12 @@
           <ion-icon ios="logo-googleplus" md="logo-googleplus" color="light"></ion-icon>
         </ion-col>
       </ion-row>
-    </div>
+    </div>-->
 
     <!-- ANOTHER OPTIONS -->
     <div class="options">
       <ion-row>
-        <!-- <ion-col> -->
         <button ion-button clear color="light" (click)="signUp()">Registrarse</button>
-        <!-- </ion-col> -->
       </ion-row>
     </div>
 

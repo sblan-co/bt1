@@ -2,7 +2,6 @@
   <ion-navbar color='booktrap'>
     <ion-item color='booktrap'>
         <button ion-button icon-only clear color='light' item-end (click)="Add(key)"><ion-icon name="search"></ion-icon></button>
-      <!--<ion-icon name="search" item-end></ion-icon>-->
       <ion-input type="search" placeholder="Buscar" (search)="Add(key)" clearInput="true" [(ngModel)]="key"></ion-input>
     </ion-item>
   </ion-navbar>

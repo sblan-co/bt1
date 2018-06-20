@@ -1,65 +1,77 @@
 <ion-header>
-        <ion-navbar color="booktrap" hideBackButton="true">
-            <ion-buttons left>
-                <button ion-button icon-only (click)="takeMeBack()">
-                    <ion-icon name="arrow-back"></ion-icon>
-                </button>
-            </ion-buttons>
-            <ion-title>
-                Editar perfil
-            </ion-title> 
-        </ion-navbar>
-    </ion-header>
-    
-    <ion-content padding>
-        <div item-content class="row">
-            <ion-avatar>
-                <img *ngIf = "user.profilePic" src="{{ user.profilePic }}"
-                />
-            </ion-avatar>
-        </div>
-        <div item-content class="row">
-                    <label for="file-input">
-                      <div item-content class="border-icono">
-                          <a>Cambiar foto</a>
-                      </div>
-                    </label>
-                    <input id="file-input" hidden='true' name="picUpload" [(ngModel)]="picUpload" accept="image/*" type="file" (change)="changeListener($event)"
-                  />
-        </div>
-    
-        <ion-grid class="grid" class="fondo">
-    
-                <form (ngSubmit)="logForm()" class="input">
-    
-                  <!-- NOMBRE -->
-                  <ion-item>
-                        <ion-label color="booktrap" floating>Nombre</ion-label>
-                    <ion-input value="{{ user.firstname }}" name="firstname" text-input-placeholder-color="light" [(ngModel)]="user.firstname"></ion-input>
-                  </ion-item>
-            
-                  <!-- APELLIDOS -->
-                  <ion-item>
-                        <ion-label color="booktrap" floating>Apellido</ion-label>
-                    <ion-input value="{{ user.surname }}" name="surname" text-input-placeholder-color="light" [(ngModel)]="user.surname"></ion-input>
-                  </ion-item>
-            
-                  <!--  TELEFONO  -->
-                  <ion-item>   
-                    <ion-label color="booktrap" floating>Teléfono
-                    </ion-label>
-                      <ion-input value="{{ user.phone }}"  name="phone" text-input-placeholder-color="light" [(ngModel)]="user.phone"></ion-input>
-                    </ion-item>
-                  <p></p>
-            
-                  <ion-row>
-                    <button [disabled]="!user.firstname || !user.surname || !user.phone" ion-button block color="booktrap"
-                      type="submit">Confirmar</button>
-                  </ion-row>
-                </form>
-            
-                <p align="center" color="secondary"></p>
-            
-              </ion-grid>
-    </ion-content>
-    
+  <ion-navbar color="booktrap" hideBackButton="true">
+    <ion-title>
+      {{ user.firstname }}
+    </ion-title>
+
+    <ion-buttons left [hidden]='external'>
+      <button ion-button color="light" icon-only clear (click)="showExchanges($event)">
+        <ion-icon name="mail"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons left [hidden]='!external'>
+      <button ion-button color="light" icon-only clear (click)="takeMeBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
+
+    <ion-buttons right [hidden]='external'>
+      <button ion-button color="light" icon-only clear (click)="showMoreOptions($event)">
+        <ion-icon name="more"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <div item-content class="row">
+    <div item-content id="avatar-image">
+      <ion-avatar color="booktrap">
+        <img *ngIf="user.profilePic" src="{{ user.profilePic }}" (error)="imgError($event)" imageViewer>
+      </ion-avatar>
+    </div>
+    <div item-content id="info">
+      <ion-label>{{ user.nExchanges }} Intercambios</ion-label>
+      <ion-label *ngIf="user.city">
+        <ion-icon name="pin" color="booktrap"></ion-icon>&nbsp;{{ user.city }}
+      </ion-label>
+      <ion-label [hidden]='external'>
+          <ion-icon name="call" color="booktrap"></ion-icon>&nbsp;{{ user.phone }}
+        </ion-label>
+    </div>
+  </div>
+  <div item-content class="row">
+    <button ion-button full [hidden]='external' color="booktrap" (click)="EditProfile()">Editar Perfil</button>
+  </div>
+  <div item-content class="row">
+    <ion-segment [(ngModel)]="books" color="booktrap">
+      <ion-segment-button outline selected value="Publications">
+        Publicados
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div [ngSwitch]="books">
+
+    <ion-grid *ngSwitchCase="'Publications'" no-padding>
+
+      <ion-row no-padding>
+
+        <ion-refresher *ngIf="external==false" (ionRefresh)="doRefresh($event);">
+          <ion-refresher-content></ion-refresher-content>
+        </ion-refresher>
+
+        <ion-col col-4 no-padding *ngFor="let publication of user.publications">
+          <ion-card no-padding (click)="selectPhotos(publication)">
+            <img class="imagen" [src]='publication.img'>
+            <ion-card-content *ngIf="publication.title.length > 10" no-padding>
+                {{ publication.title | slice:0:7 }}...
+            </ion-card-content>
+            <ion-card-content *ngIf="publication.title.length <= 10" no-padding>
+              {{publication.title}}
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

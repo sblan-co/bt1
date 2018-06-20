@@ -7,9 +7,9 @@ import { AngularFireAuth } from 'angularfire2/auth';
 
 // Ionic-Angular
 import { NavController, Platform, AlertController } from 'ionic-angular';
-import { ContactPage } from '../contact/contact';
 
-// Project
+//Project
+import { ProfilePage } from '../profile/profile';
 
 @Component({
     selector: 'page-exchanges',
@@ -115,13 +115,12 @@ export class ExchangesPage {
             alert.present();
         }
         catch (e) {
-            console.log(e);
         }
     }
 
     goToProfile(){
         localStorage.setItem('selectedPublication', JSON.stringify(this.pub));
-        this.navCtrl.push(ContactPage);
+        this.navCtrl.push(ProfilePage);
       }
 
     deleteExchange() {
@@ -146,7 +145,6 @@ export class ExchangesPage {
         alert.present();
       }
       catch (e) {
-        console.log(e);
       }
     }
 

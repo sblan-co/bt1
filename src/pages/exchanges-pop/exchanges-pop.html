@@ -2,7 +2,7 @@
     <button ion-item *ngFor='let exchange of exchanges' (click)="showExchange(exchange)">
         Nueva notificación
     </button>
-    <!-- <ion-item *ngIf = "exchange == null"> 
+    <ion-item *ngIf = "exchanges.length == 0"> 
         No hay intercambios.
-    </ion-item> -->
+    </ion-item>
 </ion-list>

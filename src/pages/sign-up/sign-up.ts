@@ -72,8 +72,6 @@ export class SignUpPage implements OnInit{
                 firebase.database().ref('/users/' + user.uid).child('lat').set(this.location['lat']);
                 firebase.database().ref('/users/' + user.uid).child('lon').set(this.location['lon']);
               }catch(error){}
-
-              //this.navCtrl.push(TabsPage);
             } else {
               // No user is signed in.
             }
@@ -81,7 +79,6 @@ export class SignUpPage implements OnInit{
         }
       ).catch(error => {
 
-        console.log('ERROR: ' + JSON.stringify(error));
         var sub;
         if (error.errorCode === "auth/invalid-email") {
           sub = "Email incorrecto, intenta de nuevo.";
@@ -128,7 +125,6 @@ export class SignUpPage implements OnInit{
       );
     }
     catch (error) {
-      console.log(JSON.stringify(error));
     }
   }
 
@@ -193,69 +189,6 @@ export class SignUpPage implements OnInit{
     });
   }
 
-  get_location() {
-    return new Promise<any>(resolve => {
-      let location = {};
-      let lat;
-      let lon;
-      let city = null;
-      //Code Location, Lat, Lon, City, Country
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(position => {
-          lat = position.coords.latitude;
-          lon = position.coords.longitude;
-
-          let latlng = new google.maps.LatLng(lat, lon);
-
-          new google.maps.Geocoder().geocode({ 'latLng': latlng }, function (results, status) {
-            if (status == google.maps.GeocoderStatus.OK) {
-              if (results[1]) {
-                var country = null, countryCode = null, cityAlt = null;
-                var c, lc, component;
-                for (var r = 0, rl = results.length; r < rl; r += 1) {
-                  var result = results[r];
-
-                  if (!city && result.types[0] === 'locality') {
-                    for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
-                      component = result.address_components[c];
-
-                      if (component.types[0] === 'locality') {
-                        city = component.long_name;
-                        break;
-                      }
-                    }
-                  }
-                  else if (!city && !cityAlt && result.types[0] === 'administrative_area_level_1') {
-                    for (c = 0, lc = result.address_components.length; c < lc; c += 1) {
-                      component = result.address_components[c];
-
-                      if (component.types[0] === 'administrative_area_level_1') {
-                        cityAlt = component.long_name;
-                        break;
-                      }
-                    }
-                  } else if (!country && result.types[0] === 'country') {
-                    country = result.address_components[0].long_name;
-                    countryCode = result.address_components[0].short_name;
-                  }
-
-                  if (city && country) {
-                    break;
-                  }
-                }
-
-                location['lat'] = lat;
-                location['lon'] = lon;
-                location['city'] = city;
-                resolve(location);
-              }
-            }
-          });
-        });
-      }
-    });
-  }
-
   presentAlert(t, m) {
     try {
       var initalertCtrl = this.alertCtrl;
@@ -276,7 +209,6 @@ export class SignUpPage implements OnInit{
       alert.present();
     }
     catch (e) {
-      console.log(e);
     }
   }
 
@@ -304,13 +236,11 @@ export class SignUpPage implements OnInit{
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('Cancelar clicado');
           }
         },
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Aceptar clicado');
             this.path = '';
             this.profilePic = null;
             this.picSelected = false;

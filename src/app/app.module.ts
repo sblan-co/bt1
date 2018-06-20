@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { PopoverController } from 'ionic-angular';
 
-// Ionic
+// Ionic Plugin
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
@@ -26,10 +26,10 @@ import { MyApp } from './app.component';
 import { LoginPage } from '../pages/login/login';
 import { SignUpPage } from '../pages/sign-up/sign-up';
 import { TabsPage } from '../pages/tabs/tabs';
-import { AboutPage } from '../pages/about/about';
-import { ContactPage } from '../pages/contact/contact';
-import { HomePage } from '../pages/home/home';
+import { BookPage } from '../pages/book/book';
 import { ProfilePage } from '../pages/profile/profile';
+import { HomePage } from '../pages/home/home';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 import { MoreOptionsPage } from '../pages/more-options/more-options';
 import { PublicationPage } from '../pages/publication/publication';
 import { ExchangesPopPage } from '../pages/exchanges-pop/exchanges-pop';
@@ -52,10 +52,10 @@ export const firebaseConfig = {
     LoginPage,
     SignUpPage,
     TabsPage,
-    AboutPage,
-    ContactPage,
-    HomePage,
+    BookPage,
     ProfilePage,
+    HomePage,
+    EditProfilePage,
     MoreOptionsPage,
     PublicationPage,
     ExchangesPopPage,
@@ -76,10 +76,10 @@ export const firebaseConfig = {
     LoginPage,
     SignUpPage,
     TabsPage,
-    AboutPage,
-    ContactPage,
-    HomePage,
+    BookPage,
     ProfilePage,
+    HomePage,
+    EditProfilePage,
     MoreOptionsPage,
     PublicationPage,
     ExchangesPopPage,

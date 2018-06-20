@@ -13,10 +13,10 @@ import { HomePage } from '../home/home';
 declare var google: any;
 
 @Component({
-  selector: 'page-about',
-  templateUrl: 'about.html'
+  selector: 'page-book',
+  templateUrl: 'book.html'
 })
-export class AboutPage implements OnInit{
+export class BookPage implements OnInit{
   book = {};
   photos: any;
   photosURLS: any;
@@ -28,8 +28,6 @@ export class AboutPage implements OnInit{
   comment: string;
   location: any;
 
-  // tabBarElement: any; //tab variable que desapareceré
-
   constructor(
     public navCtrl: NavController,
     private camera: Camera,
@@ -39,9 +37,8 @@ export class AboutPage implements OnInit{
     private toastCtrl: ToastController,
     public afStrg: AngularFireStorage,
     private geolocation: Geolocation) {
-    // this.tabBarElement = document.querySelector('.tabbar.show-tabbar'); //cojo el tab del html
-    this.photos = [];
-    this.photosURLS = [];
+      this.photos = [];
+      this.photosURLS = [];
   }
 
   async ngOnInit(){
@@ -50,11 +47,6 @@ export class AboutPage implements OnInit{
     }catch(error){
     }
   }
-
-  // ionViewWillEnter() {//tab invisible
-  //   this.tabBarElement.style.display = 'none';
-  // }
-
 
   // Saves book data in firebase database
   async uploadBook() {
@@ -89,17 +81,12 @@ export class AboutPage implements OnInit{
           }
 
           if (bookExist) {
-
             // IF IT IS, WE ADD AN EXAMPLER WITH ITS ID
-
             this.addExampler(bookKeys[i - 1]);
           }
           else {
-
             // IF IT ISN'T, WE ADD THE BOOK TO THE DATABASE AND THEN TO THE EXAMPLERS
-
             // Adds book to database
-
             let ref = firebase.database().ref('books');
 
             var bookId = ref.push({
@@ -111,7 +98,7 @@ export class AboutPage implements OnInit{
             });
           }
         });
-        this.navCtrl.setRoot(AboutPage);
+        this.navCtrl.setRoot(BookPage);
     }
 
   }
@@ -143,8 +130,6 @@ export class AboutPage implements OnInit{
     let ref = firebase.database().ref('examplers');
 
     try {
-      console.log('EDITORIAL' + this.editorial);
-
       // Adds exampler to database
       try {
         examplerKey = await ref.push({
@@ -209,13 +194,11 @@ export class AboutPage implements OnInit{
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('Cancelar clicado');
           }
         },
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Aceptar clicado');
             this.cropPicture();
           }
         }
@@ -257,20 +240,10 @@ export class AboutPage implements OnInit{
       alert.present();
     }
     catch (e) {
-      console.log(e);
     }
   }
 
-  // ionViewWillLeave() {//tab visible al abandonar
-  //   this.tabBarElement.style.display = 'flex';
-  // }
-
-  // takeMeBack() {//volver a atras boton
-  //   this.navCtrl.parent.select(0);
-  // }
-
   // PICTURES MANAGEMENT
-
   async takePhoto() {
     if (this.photos.length == 3) {
       this.MaxPhotosAlert();
@@ -298,7 +271,6 @@ export class AboutPage implements OnInit{
         this.photosURLS.push(this.path);
         this.photos.reverse();
       } catch (e) {
-        console.log(e);
       }
     }
   }
@@ -342,13 +314,11 @@ export class AboutPage implements OnInit{
           text: 'Cancelar',
           role: 'cancel',
           handler: () => {
-            console.log('Cancelar clicado');
           }
         },
         {
           text: 'Aceptar',
           handler: () => {
-            console.log('Aceptar clicado');
             this.photos.splice(index, 1);
             this.photosURLS.splice(index, 1);
             this.icons.push("" + index);
@@ -359,10 +329,7 @@ export class AboutPage implements OnInit{
     alert.present();
   }
 
-  /////////////
   // ALERTS //
-  ////////////
-
   infoAlert(m) {
     try {
       var initalertCtrl = this.alertCtrl;
@@ -379,7 +346,6 @@ export class AboutPage implements OnInit{
       alert.present();
     }
     catch (e) {
-      console.log(e);
     }
   }
 
@@ -399,7 +365,6 @@ export class AboutPage implements OnInit{
       alert.present();
     }
     catch (e) {
-      console.log(e);
     }
   }
 
@@ -415,8 +380,6 @@ export class AboutPage implements OnInit{
 
   get_location() {
     return new Promise<any>(resolve => {
-
-
       let location = {};
       let lat;
       let lon;

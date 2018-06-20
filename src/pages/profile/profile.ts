@@ -1,150 +1,173 @@
-import { Component } from '@angular/core';
-import { ContactPage } from '../contact/contact';
-import { AngularFireAuth } from 'angularfire2/auth';
-import { NavController, AlertController } from 'ionic-angular';
-import * as firebase from 'firebase/app';
+// Angular
+import { Component, OnInit } from '@angular/core';
 
+// Firebase
+import * as firebase from 'firebase/app';
+import { AngularFireAuth } from 'angularfire2/auth';
+
+// Ionic-Angular
+import { NavController, Platform } from 'ionic-angular';
+import { PopoverController } from 'ionic-angular';
+
+// Project
+import { EditProfilePage } from '../edit-profile/edit-profile';
+import { PublicationPage } from '../publication/publication';
+import { MoreOptionsPage } from '../more-options/more-options';
+import { ExchangesPopPage } from '../exchanges-pop/exchanges-pop';
+import { TabsPage } from '../tabs/tabs';
 
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html'
 })
-export class ProfilePage {
-  tabBarElement: any;
-  picSelected: boolean;
-  profilePic: any;
+export class ProfilePage{
+  external: boolean;
+  books: string;
   user: any;
-
-  constructor(public navCtrl: NavController,
-    public alertCtrl: AlertController,
+  tabBarElement: any;
+  pub: any;
+  publications: string[] = ["https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor08.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor02.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor13.jpg","https://www.chiquipedia.com/imagenes/imagenes-amor20.jpg"];
+  
+  constructor(
+    platform: Platform,
+    public navCtrl: NavController, 
+    public popoverCtrl: PopoverController,
     public afAuth: AngularFireAuth) {
-    this.picSelected = false;
-    this.user = {};
-    this.getUserData();
-    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');//cojo el tab del html
+      this.user = {};
+      this.external = false;
+      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
+
+      platform.ready().then(
+        async () => {
+          
+          if (!this.checkValue(localStorage.getItem('selectedPublication'))) {
+            this.external = false;
+            this.user['uid'] = await this.afAuth.auth.currentUser.uid;
+          }
+          else {
+            this.external = true;
+            this.pub = JSON.parse(localStorage.getItem('selectedPublication'));
+            this.user['uid'] = await this.pub.owner_id;
+          }
+
+          await this.getUserData();
+          this.books = "Publications";
+        }
+      );
   }
 
+  isOwner() {
+    //Check if exemplars's id are inside of books from the user logged
+    return firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/books').once('value').then(
+      snap => {
+        return snap.hasChild(this.pub.id);
+      }
+    );
+  }
+  
   async getUserData(){
-    await firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid).once('value').then(
+    await firebase.database().ref('users/' + this.user['uid']).once('value').then(
       async snapshot => {
-        this.user['firstname'] = await snapshot.val().firstname;
-        this.user['surname'] = await snapshot.val().surname;
-        this.user['profilePic'] = await snapshot.val().profilePic;
-        this.user['phone'] = await snapshot.val().phone;
+        this.user['firstname'] = snapshot.val().firstname;
+        this.user['lat'] = snapshot.val().lat;
+        this.user['lon'] = snapshot.val().lon;
+        this.user['city'] = snapshot.val().city;
+        this.user['profilePic'] = snapshot.val().profilePic;
+        this.user['phone'] = snapshot.val().phone;
+        
+        if (snapshot.hasChild('exchanges')){
+          await firebase.database().ref('users/' + this.user['uid'] + '/exchanges').once('value').then(
+            snapExchanges => {
+              this.user['nExchanges'] = Object.keys(snapExchanges.val()).length;
+            }
+          );
+        }
+        else{          
+          this.user['nExchanges'] = 0;
+        }
+
+        this.user['publications'] = [];
+        
+        if (snapshot.hasChild('books')){
+          await firebase.database().ref('users/' + this.user['uid'] + '/books').once('value').then(
+            async snapBooks => {
+
+              //Keys from the exemplars of the user
+              let bookKeys = Object.keys(snapBooks.val());
+
+              //Dates exemplars     
+              for (let k of bookKeys){
+                await firebase.database().ref('examplers/' + k).once('value').then(
+                  async snapExampler => {
+                    let book = {};
+
+                    // Finding name of a book
+                    await firebase.database().ref('books/' + snapExampler.val().book_id).once('value').then(
+                      snapBook => {
+                        book['title'] = snapBook.val().title;
+                        book['author'] = snapBook.val().author;
+                      }
+                    );
+                    
+
+                    var imgKeys = snapExampler.val().downloadURL.split(',');
+
+                    book['img'] = imgKeys[0];
+                    book['id'] = k;
+                    
+                    this.user['publications'].push(book);
+                  }
+                );  
+              }
+            }
+          );
+        }
       }
     );
   }
 
-  async logForm() {
-      let firstName: string = this.user['firstname'];
-      let surname: string = this.user['surname'];
-      let phone: string = this.user['phone'];
-
-          firebase.auth().onAuthStateChanged(async user => {
-            if (user) {
-
-              let userRef = firebase.database().ref('/users/' + user.uid);
-
-              userRef.update({
-                'firstname': firstName,
-                'surname': surname,
-                'phone':phone
-              });
-
-              if (this.picSelected) {
-                var picture_url = await this.AddImagesStorage(user.uid);
-                firebase.database().ref('/users/' + user.uid).child('profilePic').set(picture_url);
-              }
-
-              this.infoAlert('El usuario ha sido editado.');
-
-              //this.navCtrl.push(TabsPage);
-            } else {
-              // No user is signed in.
-            }
-        });
-  }
-
-  infoAlert(m) {
-    try {
-      var initalertCtrl = this.alertCtrl;
-      let alert = initalertCtrl.create({
-        title: '',
-        message: m,
-        buttons: [
-          {
-            text: 'Ok',
-            role: 'alert',
-          }
-        ]
-      });
-      alert.present();
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  presentAlert(t, m) {
-    try {
-      var initalertCtrl = this.alertCtrl;
-      let alert = initalertCtrl.create({
-        title: t,
-        message: m,
-        buttons: [
-          {
-            text: 'No',
-            role: 'alert',
-          },
-          {
-            text: 'Yes',
-            role: 'confirm',
-          }
-        ]
-      });
-      alert.present();
-    }
-    catch (e) {
-      console.log(e);
-    }
-  }
-
-  async AddImagesStorage(uid) {
-    try {
-      const pictures = await firebase.storage().ref('users/' + uid + '/profile/' + this.profilePic.name);
-      await pictures.put(this.profilePic);
-      return await pictures.getDownloadURL().then(
-        async (snapshot) => {
-          return await snapshot;
-        }
-      );
-    }
-    catch (error) {
-      console.log(JSON.stringify(error));
-    }
-  }
-
-  ionViewWillEnter() {//tab invisible
-    this.tabBarElement.style.display = 'none';
-  }
-
-  ionViewWillLeave() {//tab visible al abandonar
-    this.tabBarElement.style.display = 'flex';
+  imgError($event) {
+    $event.target['src'] = 'https://firebasestorage.googleapis.com/v0/b/booktrap-d814e.appspot.com/o/whiteperson.png?alt=media&token=42d21c7e-6f14-473e-b361-81a901bb172f';
   }
   
-  takeMeBack() {//volver a atras boton
+  doRefresh(refresher) {
+    setTimeout(() => {
+      if (refresher != 0)
+        refresher.complete();
+      this.navCtrl.setRoot(ProfilePage);
+    }, 500);
+  };
+  
+  checkValue(str: any): boolean {
+    return ((str !== '') && (str != null) && (str !== 'null') && (str !== 'undefined'));
+  }
+  
+  EditProfile() {
+    this.navCtrl.push(EditProfilePage);
+  }
+
+  showMoreOptions($event)
+  {
+    let popover = this.popoverCtrl.create(MoreOptionsPage);
+    popover.present({
+      ev: $event
+    });
+  }
+
+  showExchanges($event){    
+    let popover = this.popoverCtrl.create(ExchangesPopPage);
+    popover.present({
+      ev: $event
+    });
+  }
+
+  selectPhotos(pub) {
+    pub['owner_id'] = this.user['uid'];
+    localStorage.setItem('selectedPublication', JSON.stringify(pub));
+    this.navCtrl.push(PublicationPage);
+  }
+
+  takeMeBack(){
     this.navCtrl.pop();
   }
-
-  changeListener($event): void {
-    this.profilePic = $event.target.files[0];
-    this.picSelected = true;
-
-    var reader = new FileReader();
-    reader.onload = e => {
-      this.user['profilePic'] = reader.result;
-    };
-    reader.readAsDataURL($event.target.files[0]);
-  }
-
 }

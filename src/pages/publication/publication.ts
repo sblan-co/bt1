@@ -5,7 +5,7 @@ import { NavController, Platform, AlertController } from 'ionic-angular';
 import * as firebase from 'firebase/app';
 
 // Project
-import { ContactPage } from '../contact/contact';
+import { ProfilePage } from '../profile/profile';
 import { AngularFireAuth } from 'angularfire2/auth';
 
 @Component({
@@ -28,7 +28,6 @@ export class PublicationPage {
     platform.ready().then(
       async () => {
         var pubAux = JSON.parse(localStorage.getItem('selectedPublication'));
-        // console.log(JSON.stringify(pubAux));
         this.exampler['title'] = pubAux.title;
         this.exampler['author'] = pubAux.author;
         this.exampler['id'] = pubAux.id;
@@ -43,16 +42,9 @@ export class PublicationPage {
     localStorage.removeItem('selectedPublication');    
     this.navCtrl.popToRoot();
     this.tabBarElement.style.display = 'flex';
-    // if (this.owner) {
-    //   this.navCtrl.push(ContactPage);
-    // }
-    // else {
-    //   this.navCtrl.setRoot(HomePage);
-    // }
   }
 
   isOwner() {
-    // Comprobar si la id del ejemplar esta dentro de los libros del usuario logeado
     return firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/books').once('value').then(
       snap => {
         return snap.hasChild(this.exampler['id']);
@@ -61,10 +53,8 @@ export class PublicationPage {
   }
 
   async getBookData() {
-    // console.log(this.exampler.id);
     await firebase.database().ref('examplers/' + this.exampler.id).once('value').then(
       async snapshot => {
-        // console.log(JSON.stringify(snapshot));
         this.exampler['editorial'] = snapshot.val().editorial ? snapshot.val().editorial : 'Desconocida';
         this.exampler['comment'] = snapshot.val().comment;
         this.exampler['pics'] = snapshot.val().downloadURL.split(',');
@@ -89,7 +79,7 @@ export class PublicationPage {
   }
 
   goToProfile(){
-    this.navCtrl.push(ContactPage);
+    this.navCtrl.push(ProfilePage);
   }
 
   deletePublication() {
@@ -101,7 +91,7 @@ export class PublicationPage {
       photosRef.child(i + '.jpg').delete().then(
         () => {
           // File deleted successfully
-          console.log('Fotos borradas guay');
+          console.log('Fotos borradas satisfactoriamente');
         }).catch(function (error) {
           // Uh-oh, an error occurred!
           console.log('Error al borrar del storage');
@@ -110,7 +100,7 @@ export class PublicationPage {
 
     firebase.database().ref('examplers/' + this.exampler['id']).remove();
     firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/books/' + this.exampler['id']).remove();
-    this.infoAlert('Publicación eliminada con éxito.');
+    this.infoAlert('Publicación eliminada con éxito, Espere unos segundos...');
     localStorage.removeItem('selectedPublication');    
     //this.navCtrl.popToRoot();
     //this.tabBarElement.style.display = 'flex';
@@ -132,7 +122,6 @@ export class PublicationPage {
       firebase.database().ref('users/' + this.exampler['owner_id']).once('value').then(
         snap => {
           if (snap.hasChild('exchanges')) {
-            console.log('users/' + this.exampler['owner_id'] + '/exchanges');
             firebase.database().ref('users/' + this.exampler['owner_id'] + '/exchanges')
               .child(exchangeId).set(exchangeId);
           }
@@ -147,9 +136,7 @@ export class PublicationPage {
     });
   }
 
-  ///////////
   // ALERT //
-  ///////////
 
   showDeleteAlert() {
     this.presentAlert('Eliminar', '¿Está seguro de que desea eliminar la publicación?', 'delete');
@@ -188,7 +175,6 @@ export class PublicationPage {
       alert.present();
     }
     catch (e) {
-      console.log(e);
     }
   }
 
@@ -208,7 +194,6 @@ export class PublicationPage {
       alert.present();
     }
     catch (e) {
-      console.log(e);
     }
   }
 

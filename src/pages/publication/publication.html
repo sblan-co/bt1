@@ -3,11 +3,6 @@
         <ion-title>
             Publicación
         </ion-title>
-        <!--<ion-buttons right>
-            <button ion-button clear>
-                <ion-icon name='star-outline'></ion-icon>
-            </button>
-        </ion-buttons>-->
         <ion-buttons left>
             <button ion-button clear (click)='takeMeBack()'>
                 <ion-icon name='arrow-back'></ion-icon>
@@ -19,11 +14,9 @@
 <ion-content no-padding>
 
     <!-- IMAGEN -->
-    <!--<ion-item class='imagenes'>-->
     <ion-slides pager class="border-image">
         <ion-slide *ngFor='let pic of exampler.pics'>
                         <img class='image' src='{{pic}}' imageViewer/>
-                    <!--*ngFor='let img of book.images'-->
         </ion-slide>
     </ion-slides>
 

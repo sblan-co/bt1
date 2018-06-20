@@ -67,10 +67,10 @@ export class LoginPage {
       alert.present();
     }
     catch (e) {
-      console.log(e);
     }
   }
 
+  //FutureCode
   fbLogin(): Promise<any> {
     return this.fb.login(['public_profile', 'user_birthday', 'email']).then(
       async (res) => {
@@ -98,12 +98,10 @@ export class LoginPage {
           )
           //this.navCtrl.push(TabsPage);
         } catch (error) {
-          console.error(error);
         }
       }
     ).catch(
       error => {
-        console.log(error);
       }
     );
   }

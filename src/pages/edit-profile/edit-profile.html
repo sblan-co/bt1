@@ -1,0 +1,65 @@
+<ion-header>
+        <ion-navbar color="booktrap" hideBackButton="true">
+            <ion-buttons left>
+                <button ion-button icon-only (click)="takeMeBack()">
+                    <ion-icon name="arrow-back"></ion-icon>
+                </button>
+            </ion-buttons>
+            <ion-title>
+                Editar perfil
+            </ion-title> 
+        </ion-navbar>
+    </ion-header>
+    
+    <ion-content padding>
+        <div item-content class="row">
+            <ion-avatar>
+                <img *ngIf = "user.profilePic" src="{{ user.profilePic }}"
+                />
+            </ion-avatar>
+        </div>
+        <div item-content class="row">
+                    <label for="file-input">
+                      <div item-content class="border-icono">
+                          <a>Cambiar foto</a>
+                      </div>
+                    </label>
+                    <input id="file-input" hidden='true' name="picUpload" [(ngModel)]="picUpload" accept="image/*" type="file" (change)="changeListener($event)"
+                  />
+        </div>
+    
+        <ion-grid class="grid" class="fondo">
+    
+                <form (ngSubmit)="logForm()" class="input">
+    
+                  <!-- NOMBRE -->
+                  <ion-item>
+                        <ion-label color="booktrap" floating>Nombre</ion-label>
+                    <ion-input value="{{ user.firstname }}" name="firstname" text-input-placeholder-color="light" [(ngModel)]="user.firstname"></ion-input>
+                  </ion-item>
+            
+                  <!-- APELLIDOS -->
+                  <ion-item>
+                        <ion-label color="booktrap" floating>Apellido</ion-label>
+                    <ion-input value="{{ user.surname }}" name="surname" text-input-placeholder-color="light" [(ngModel)]="user.surname"></ion-input>
+                  </ion-item>
+            
+                  <!--  TELEFONO  -->
+                  <ion-item>   
+                    <ion-label color="booktrap" floating>Teléfono
+                    </ion-label>
+                      <ion-input value="{{ user.phone }}"  name="phone" text-input-placeholder-color="light" [(ngModel)]="user.phone"></ion-input>
+                    </ion-item>
+                  <p></p>
+            
+                  <ion-row>
+                    <button [disabled]="!user.firstname || !user.surname || !user.phone" ion-button block color="booktrap"
+                      type="submit">Confirmar</button>
+                  </ion-row>
+                </form>
+            
+                <p align="center" color="secondary"></p>
+            
+              </ion-grid>
+    </ion-content>
+    
