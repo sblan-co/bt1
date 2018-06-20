@@ -83,7 +83,7 @@ export class ExchangesPage {
     }
 
     takeMeBack() {//volver a atras boton
-        this.navCtrl.pop();
+        this.navCtrl.popToRoot();
     }
 
     showDeleteAlert() {
