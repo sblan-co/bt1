@@ -29,7 +29,6 @@
     <div item-content id="avatar-image">
       <ion-avatar color="booktrap">
         <img *ngIf="user.profilePic" src="{{ user.profilePic }}" (error)="imgError($event)" imageViewer>
-        <ion-icon name="contact" *ngIf="!user.profilePic"></ion-icon>
       </ion-avatar>
     </div>
     <div item-content id="info">
@@ -38,6 +37,9 @@
       <ion-label *ngIf="user.city">
         <ion-icon name="pin" color="booktrap"></ion-icon>&nbsp;{{ user.city }}
       </ion-label>
+      <ion-label [hidden]='external'>
+          <ion-icon name="call" color="booktrap"></ion-icon>&nbsp;{{ user.phone }}
+        </ion-label>
     </div>
   </div>
   <div item-content class="row">
@@ -72,8 +74,11 @@
         <ion-col col-4 no-padding *ngFor="let publication of user.publications">
           <ion-card no-padding (click)="selectPhotos(publication)">
             <img class="imagen" [src]='publication.img'>
-            <ion-card-content no-padding>
-              {{ publication.title | slice:0:11 }}
+            <ion-card-content *ngIf="publication.title.length > 10" no-padding>
+                {{ publication.title | slice:0:7 }}...
+            </ion-card-content>
+            <ion-card-content *ngIf="publication.title.length <= 10" no-padding>
+              {{publication.title}}
             </ion-card-content>
           </ion-card>
         </ion-col>

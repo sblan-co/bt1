@@ -29,9 +29,6 @@ import { PasswordPage } from '../password/password';
     }
 
     changePassword(){
-      this.viewCtrl.dismiss().then(() => {
-        this.navCtrl.push(PasswordPage);
-      });
-      // this.viewCtrl.dismiss();
+      this.navCtrl.push(PasswordPage);
     }
   }

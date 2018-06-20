@@ -29,13 +29,12 @@
             </ion-label>
         </div>
     </div>
-    <ion-item>
-        <div style='max-height: 20%;'>
-            <img style='max-height: 20%;' src='{{ exampler.pic }}' ImageViewer>
-        </div>
+
+    <ion-item class="border-image">
+            <img class="image" src='{{ exampler.pic }}' imageViewer>
     </ion-item>
 
-    <div>
+    <div class="border-msg">
         {{ requester.firstname }} está interesado/a en tu libro "{{ exampler.title }}" de {{ exampler.author }}.
     </div>
 </ion-content>

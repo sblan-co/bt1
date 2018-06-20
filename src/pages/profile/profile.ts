@@ -4,6 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { NavController, AlertController } from 'ionic-angular';
 import * as firebase from 'firebase/app';
 
+
 @Component({
   selector: 'page-profile',
   templateUrl: 'profile.html'

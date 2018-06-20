@@ -10,7 +10,6 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Facebook } from '@ionic-native/facebook';
 import { Camera } from '@ionic-native/camera';
-import { ImagePicker } from '@ionic-native/image-picker';
 import { Crop } from '@ionic-native/crop';
 import { Geolocation } from '@ionic-native/geolocation';
 import { IonicImageViewerModule } from 'ionic-img-viewer';
@@ -93,7 +92,6 @@ export const firebaseConfig = {
     AngularFireStorage,
     StatusBar,
     Camera,
-    ImagePicker,
     PopoverController,
     Crop,
     Geolocation,

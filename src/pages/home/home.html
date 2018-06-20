@@ -26,8 +26,11 @@
       <ion-col col-4 no-padding *ngFor="let image of images; let id = index">
           <ion-card no-padding (click)="selectPhotos(image)">
               <img class="imagen" [src]='image.img'>
-              <ion-card-content no-padding>
-                  {{ image.title | slice:0:11 }}
+              <ion-card-content *ngIf="image.title.length > 10" no-padding>
+                  {{ image.title | slice:0:7 }}...
+              </ion-card-content>
+              <ion-card-content *ngIf="image.title.length <= 10" no-padding>
+                {{image.title}}
               </ion-card-content>
             </ion-card>
         <!--<img [src]=image.img (click)="selectPhotos(image)"/>-->

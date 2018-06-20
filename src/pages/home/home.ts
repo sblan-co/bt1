@@ -16,7 +16,8 @@ export class HomePage {
   lat_user: any;
   lon_user: any;
   images: any;
-  constructor(public navCtrl: NavController,
+  constructor(
+  public navCtrl: NavController,
   public alertCtrl: AlertController,
   public afAuth: AngularFireAuth) {
     this.reload = true;

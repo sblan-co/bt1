@@ -5,6 +5,7 @@ import { NavController, AlertController } from 'ionic-angular';
 import * as firebase from 'firebase/app';
 import { ViewController } from 'ionic-angular';
 import { EmailAuthProvider } from '@firebase/auth-types';
+import { Platform } from 'ionic-angular';
 
 @Component({
   selector: 'page-password',
@@ -16,9 +17,17 @@ export class PasswordPage {
 
   constructor(public viewCtrl: ViewController, public navCtrl: NavController,
     public alertCtrl: AlertController,
-    public afAuth: AngularFireAuth) {
-    this.user = {};
-    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');//cojo el tab del html
+    public afAuth: AngularFireAuth,
+    public platform: Platform) {
+      /*platform.registerBackButtonAction(() => {
+        this.navCtrl.pop();
+      }, 2);*/
+      this.user = {};
+      this.tabBarElement = document.querySelector('.tabbar.show-tabbar');//cojo el tab del html
+  }
+
+  ionViewDidEnter(){
+    
   }
 
   infoAlert(m) {

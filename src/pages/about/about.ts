@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
-import { ImagePicker } from '@ionic-native/image-picker';
 import { Crop } from '@ionic-native/crop';
 import * as firebase from 'firebase/app';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireStorage } from 'angularfire2/storage';
 import { convertUrlToDehydratedSegments } from 'ionic-angular/navigation/url-serializer';
 import { Geolocation } from '@ionic-native/geolocation';
+import { HomePage } from '../home/home';
 
 declare var google: any;
 
@@ -34,7 +34,6 @@ export class AboutPage implements OnInit{
     public navCtrl: NavController,
     private camera: Camera,
     private alertCtrl: AlertController,
-    public picker: ImagePicker,
     public crop: Crop,
     public afAuth: AngularFireAuth,
     private toastCtrl: ToastController,

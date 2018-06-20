@@ -32,7 +32,6 @@ export class ContactPage {
     public navCtrl: NavController, 
     public popoverCtrl: PopoverController,
     public afAuth: AngularFireAuth) {
-      
       this.user = {};
       this.external = false;
 
