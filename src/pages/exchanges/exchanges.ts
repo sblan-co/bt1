@@ -126,7 +126,7 @@ export class ExchangesPage {
     deleteExchange() {
         firebase.database().ref('exchanges/' + this.exchange_id).remove();
         firebase.database().ref('users/' + this.afAuth.auth.currentUser.uid + '/exchanges/' + this.exchange_id).remove();
-        this.navCtrl.push(ContactPage);
+        this.navCtrl.pop();
         this.infoAlert('Intercambio eliminado con éxito.');
     }
 
