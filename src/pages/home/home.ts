@@ -26,7 +26,6 @@ export class HomePage {
     let pub = localStorage.getItem('selectedPublication');
   }
 
-
    async listExamplers(){
        await this.getUserData();
        await firebase.database().ref('examplers').on('child_added', async snapshot => {
@@ -134,7 +133,7 @@ export class HomePage {
     setTimeout(() => {
       if (refresher != 0)
         refresher.complete();
-      this.navCtrl.setRoot(TabsPage);
+      this.navCtrl.setRoot(HomePage);
     }, 500);
   };
 }

@@ -249,7 +249,7 @@ export class AboutPage implements OnInit{
             role: 'alert',
           },
           {
-            text: 'Yes',
+            text: 'Si',
             role: 'confirm',
           }
         ]

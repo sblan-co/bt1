@@ -37,24 +37,38 @@ export class LoginPage {
 
   emailLogin(email, password) {
 
-    this.afAuth.auth.signInWithEmailAndPassword(email, password).then(
-      res => {
-        this.navCtrl.push(TabsPage);
-      }
-    ).catch(
-      error => {
-        let alert = this.alertCtrl.create({
-          title: 'Error',
-          message: 'Email o contraseña no válidos.' + error,
-          buttons: [
-            {
-              text: 'Cerrar',
-              role: 'cancel'
-            }
-          ]
+    try{
+      this.afAuth.auth.signInWithEmailAndPassword(email, password).then(
+        res => {
+          this.navCtrl.push(TabsPage);
+        }
+      ).catch(
+        error => {
+          this.infoAlert("Error", "Email o Contraseña incorrectos");
         });
-        alert.present();
+    }catch(error){
+      this.infoAlert("Error","Introduzca un Email y Contraseña.")
+    }
+  }
+
+  infoAlert(t,m) {
+    try {
+      var initalertCtrl = this.alertCtrl;
+      let alert = initalertCtrl.create({
+        title: t,
+        message: m,
+        buttons: [
+          {
+            text: 'Ok',
+            role: 'alert',
+          }
+        ]
       });
+      alert.present();
+    }
+    catch (e) {
+      console.log(e);
+    }
   }
 
   fbLogin(): Promise<any> {
