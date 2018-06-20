@@ -50,7 +50,7 @@ export class ExchangesPage {
                         this.requester['profilePic'] = user.val().profilePic;
                         this.requester['firstname'] = user.val().firstname;
                         this.requester['city'] = user.val().city;
-                        this.requester['tlf'] = user.val().tlf;
+                        this.requester['phone'] = user.val().phone;
                     }
                 );
 
