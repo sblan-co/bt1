@@ -19,15 +19,30 @@ export class PasswordPage {
     public alertCtrl: AlertController,
     public afAuth: AngularFireAuth,
     public platform: Platform) {
-      /*platform.registerBackButtonAction(() => {
-        this.navCtrl.pop();
-      }, 2);*/
       this.user = {};
       this.tabBarElement = document.querySelector('.tabbar.show-tabbar');//cojo el tab del html
   }
 
-  ionViewDidEnter(){
-    
+  ExitAlert() {
+    let alert = this.alertCtrl.create({
+      title: 'Salir de la app',
+      message: '¿Quieres salir de la app?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Aceptar',
+          handler: () => {
+            this.platform.exitApp();
+          }
+        }
+      ]
+    });
+    alert.present();
   }
 
   infoAlert(m) {

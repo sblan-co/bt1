@@ -45,10 +45,8 @@ export class ContactPage{
             this.user['uid'] = await this.afAuth.auth.currentUser.uid;
           }
           else {
-            console.log(this.external);
             this.external = true;
             this.pub = JSON.parse(localStorage.getItem('selectedPublication'));
-            console.log('PUB ' + JSON.stringify(this.pub));
             this.user['uid'] = await this.pub.owner_id;
           }
 
@@ -68,10 +66,8 @@ export class ContactPage{
   }
   
   async getUserData(){
-    console.log(this.user['uid']);
     await firebase.database().ref('users/' + this.user['uid']).once('value').then(
       async snapshot => {
-        console.log(JSON.stringify(snapshot));
         this.user['firstname'] = snapshot.val().firstname;
         this.user['lat'] = snapshot.val().lat;
         this.user['lon'] = snapshot.val().lon;
@@ -108,16 +104,12 @@ export class ContactPage{
                     // Buscamos el nombre del libro
                     await firebase.database().ref('books/' + snapExampler.val().book_id).once('value').then(
                       snapBook => {
-                        // console.log('BOOK ' + JSON.stringify(snapBook));
                         book['title'] = snapBook.val().title;
                         book['author'] = snapBook.val().author;
                         // console.log('TITLE ' + book['title']);
                       }
                     );
-
-                    //
-                    // DESCOMENTAR CUANDO CONSIGAMOS INSERTAR IMAGENES
-                    //
+                    
 
                     var imgKeys = snapExampler.val().downloadURL.split(',');
 

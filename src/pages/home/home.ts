@@ -14,17 +14,20 @@ import { TabsPage } from '../tabs/tabs';
 export class HomePage {
   reload: boolean;
   lat_user: any;
+  tabBarElement: any;
   lon_user: any;
   images: any;
   constructor(
   public navCtrl: NavController,
   public alertCtrl: AlertController,
   public afAuth: AngularFireAuth) {
+    this.tabBarElement = document.querySelector('.tabbar.show-tabbar');
     this.reload = true;
     this.images = [];
     this.listExamplers();
     let pub = localStorage.getItem('selectedPublication');
   }
+
 
    async listExamplers(){
        await this.getUserData();

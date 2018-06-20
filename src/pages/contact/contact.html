@@ -50,15 +50,6 @@
       <ion-segment-button outline selected value="Publications">
         Publicados
       </ion-segment-button>
-      <!--<ion-segment-button value="Favoritos">
-        Favoritos
-      </ion-segment-button>
-      <ion-segment-button value="Opiniones">
-        Opiniones
-      </ion-segment-button>-->
-      <!--<ion-segment-button value="Seguidos">
-        Seguidos
-      </ion-segment-button>-->
     </ion-segment>
   </div>
   <div [ngSwitch]="books">
@@ -67,7 +58,7 @@
 
       <ion-row no-padding>
 
-        <ion-refresher (ionRefresh)="doRefresh($event);">
+        <ion-refresher *ngIf="external==false" (ionRefresh)="doRefresh($event);">
           <ion-refresher-content></ion-refresher-content>
         </ion-refresher>
 
